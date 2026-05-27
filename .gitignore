@@ -1,0 +1,29 @@
+# Node / Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+frontend/.env.local
+frontend/.env.development.local
+frontend/.env.test.local
+frontend/.env.production.local
+
+# Python / Backend
+backend/__pycache__/
+backend/uploads/
+backend/outputs/
+backend/reports/
+backend/mock_mri.png
+backend/models/*.pth
+backend/*.pth
+
+# Large model weight files in general
+*.pth
+*.pt
+*.bin
+*.onnx
+
+# IDE / System files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
