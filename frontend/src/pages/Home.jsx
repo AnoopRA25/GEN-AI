@@ -88,10 +88,10 @@ const Home = () => {
     heroTitle: {
       fontSize: 'clamp(44px, 6vw, 80px)',
       fontWeight: '900', letterSpacing: '-2px', lineHeight: 1.05,
-      color: '#0f172a', marginBottom: '20px',
+      color: 'var(--text-primary)', marginBottom: '20px',
     },
     heroDesc: {
-      fontSize: '18px', color: '#64748b', lineHeight: 1.7,
+      fontSize: '18px', color: 'var(--text-secondary)', lineHeight: 1.7,
       maxWidth: '560px', margin: '0 auto 40px',
     },
     btnPrimary: {
@@ -106,10 +106,10 @@ const Home = () => {
     btnSecondary: {
       display: 'inline-flex', alignItems: 'center', gap: '10px',
       padding: '14px 28px', borderRadius: '14px',
-      background: '#fff', color: '#2563eb',
+      background: 'var(--bg-card-solid)', color: 'var(--accent-indigo)',
       fontSize: '16px', fontWeight: '700',
-      border: '1.5px solid rgba(37,99,235,0.25)', cursor: 'pointer',
-      boxShadow: '0 2px 12px rgba(37,99,235,0.08)',
+      border: '1px solid var(--border-color)', cursor: 'pointer',
+      boxShadow: 'var(--shadow-sm)',
     },
     statsRow: {
       display: 'flex', flexWrap: 'wrap', justifyContent: 'center',
@@ -124,15 +124,15 @@ const Home = () => {
     statValue: { fontSize: '18px', fontWeight: '900' },
     sectionTitle: {
       fontSize: 'clamp(28px, 3.5vw, 40px)', fontWeight: '800',
-      color: '#0f172a', letterSpacing: '-1px', marginBottom: '12px',
+      color: 'var(--text-primary)', letterSpacing: '-1px', marginBottom: '12px',
     },
     sectionSub: {
-      fontSize: '16px', color: '#64748b', marginBottom: '48px',
+      fontSize: '16px', color: 'var(--text-secondary)', marginBottom: '48px',
     },
     featureCard: (color, bg) => ({
-      background: '#fff', borderRadius: '20px', padding: '28px',
-      border: '1px solid rgba(0,0,0,0.06)',
-      boxShadow: '0 4px 16px rgba(0,0,0,0.06)',
+      background: 'var(--bg-card)', borderRadius: '20px', padding: '28px',
+      border: '1px solid var(--border-color)',
+      boxShadow: 'var(--shadow-sm)',
       transition: 'all 0.3s ease', cursor: 'default',
       textAlign: 'left',
     }),
@@ -149,14 +149,14 @@ const Home = () => {
       border: `1px solid ${color}22`, marginBottom: '10px',
     }),
     cardTitle: {
-      fontSize: '17px', fontWeight: '700', color: '#0f172a',
+      fontSize: '17px', fontWeight: '700', color: 'var(--text-primary)',
       marginBottom: '8px', letterSpacing: '-0.3px',
     },
-    cardDesc: { fontSize: '14px', color: '#64748b', lineHeight: 1.65 },
+    cardDesc: { fontSize: '14px', color: 'var(--text-secondary)', lineHeight: 1.65 },
     uploadWrapper: {
-      background: '#fff', borderRadius: '24px', padding: '8px',
-      boxShadow: '0 20px 60px rgba(37,99,235,0.12)',
-      border: '1px solid rgba(37,99,235,0.1)',
+      background: 'var(--bg-card-solid)', borderRadius: '24px', padding: '8px',
+      boxShadow: 'var(--shadow-lg)',
+      border: '1px solid var(--border-color)',
       width: '100%', maxWidth: '640px',
     },
   };
@@ -203,8 +203,8 @@ const Home = () => {
         <FadeIn delay={180}>
           <p style={S.heroDesc}>
             Upload your MRI scan for instant AI-powered tumor detection using{' '}
-            <strong style={{ color: '#2563eb' }}>ESRGAN</strong> super-resolution and{' '}
-            <strong style={{ color: '#2563eb' }}>U-Net++</strong> segmentation.
+            <strong style={{ color: 'var(--accent-indigo)' }}>ESRGAN</strong> super-resolution and{' '}
+            <strong style={{ color: 'var(--accent-indigo)' }}>U-Net++</strong> segmentation.
           </p>
         </FadeIn>
 
@@ -226,7 +226,7 @@ const Home = () => {
             {STATS.map((s, i) => (
               <div key={i} style={S.statPill(s.color, s.bg)}>
                 <span style={S.statValue}><CountUp target={s.value} suffix={s.suffix} duration={1.5} /></span>
-                <span style={{ fontWeight: '500', color: '#475569', fontSize: '13px' }}>{s.label}</span>
+                <span style={{ fontWeight: '500', color: 'var(--text-secondary)', fontSize: '13px' }}>{s.label}</span>
               </div>
             ))}
           </div>

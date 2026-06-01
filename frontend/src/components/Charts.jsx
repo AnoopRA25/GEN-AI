@@ -7,6 +7,11 @@ import { Doughnut, Bar } from 'react-chartjs-2';
 
 ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement);
 
+const getCSSVal = (name, fallback) => {
+  if (typeof window === 'undefined') return fallback;
+  return getComputedStyle(document.documentElement).getPropertyValue(name).trim() || fallback;
+};
+
 /* ─── Confidence Gauge ──────────────────────────────────────────── */
 export const ConfidenceGauge = ({ confidence, tumorDetected }) => {
   const pct = Math.min(Math.max(confidence, 0), 100);
@@ -51,7 +56,7 @@ export const ConfidenceGauge = ({ confidence, tumorDetected }) => {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', gap: '4px' }}>
       {/* Title */}
-      <span style={{ fontSize: '11px', fontWeight: '700', letterSpacing: '0.08em', textTransform: 'uppercase', color: '#64748b' }}>
+      <span style={{ fontSize: '11px', fontWeight: '700', letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--text-secondary)' }}>
         AI Confidence
       </span>
 
@@ -84,6 +89,14 @@ export const TissueChart = ({ tumorPct }) => {
   const tumor   = Math.min(Math.max(tumorPct, 0), 100);
   const healthy = 100 - tumor;
 
+  const isLight = typeof document !== 'undefined' && document.documentElement.classList.contains('light');
+  const chartKey = isLight ? 'light' : 'dark';
+
+  const textColor = getCSSVal('--text-secondary', '#94a3b8');
+  const borderColor = getCSSVal('--border-color', 'rgba(255,255,255,0.09)');
+  const titleColor = getCSSVal('--text-primary', '#f0f4f8');
+  const tooltipBg = getCSSVal('--bg-card-solid', '#161b27');
+
   const data = {
     labels: ['Healthy', 'Abnormal'],
     datasets: [{
@@ -102,10 +115,10 @@ export const TissueChart = ({ tumorPct }) => {
     plugins: {
       legend: { display: false },
       tooltip: {
-        backgroundColor: 'rgba(15,23,42,0.9)',
-        titleColor:      '#f1f5f9',
-        bodyColor:       '#94a3b8',
-        borderColor:     'rgba(37,99,235,0.3)',
+        backgroundColor: tooltipBg,
+        titleColor:      titleColor,
+        bodyColor:       textColor,
+        borderColor:     borderColor,
         borderWidth: 1,
         callbacks: { label: ctx => ` ${ctx.raw.toFixed(2)}%` },
       },
@@ -113,12 +126,12 @@ export const TissueChart = ({ tumorPct }) => {
     scales: {
       x: {
         max: 100,
-        grid:  { color: 'rgba(148,163,184,0.12)' },
-        ticks: { color: '#475569', font: { size: 11 } },
+        grid:  { color: borderColor },
+        ticks: { color: textColor, font: { size: 11 } },
       },
       y: {
         grid:  { display: false },
-        ticks: { color: '#334155', font: { weight: '600', size: 12 } },
+        ticks: { color: textColor, font: { weight: '600', size: 12 } },
       },
     },
     animation: { duration: 900 },
@@ -126,7 +139,7 @@ export const TissueChart = ({ tumorPct }) => {
 
   return (
     <div style={{ height: 90 }}>
-      <Bar data={data} options={options} />
+      <Bar key={chartKey} data={data} options={options} />
     </div>
   );
 };

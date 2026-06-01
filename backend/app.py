@@ -49,15 +49,18 @@ OPENROUTER_VISION_MODEL = "google/gemini-flash-1.5"   # vision-capable
 OPENROUTER_TEXT_MODEL   = "google/gemini-flash-1.5"   # text-only fallback
 
 openrouter_client = None
-try:
-    from openai import OpenAI
-    openrouter_client = OpenAI(
-        api_key=OPENROUTER_API_KEY,
-        base_url=OPENROUTER_BASE_URL,
-    )
-    logger.info("✓ OpenRouter LLM client ready (model: %s)", OPENROUTER_VISION_MODEL)
-except ImportError:
-    logger.warning("openai package not installed — LLM insights will use rule-based fallback")
+if OPENROUTER_API_KEY:
+    try:
+        from openai import OpenAI
+        openrouter_client = OpenAI(
+            api_key=OPENROUTER_API_KEY,
+            base_url=OPENROUTER_BASE_URL,
+        )
+        logger.info("✓ OpenRouter LLM client ready (model: %s)", OPENROUTER_VISION_MODEL)
+    except Exception as e:
+        logger.warning(f"Failed to initialize OpenAI client: {e} — LLM insights will use rule-based fallback")
+else:
+    logger.info("OPENROUTER_API_KEY not found in environment — LLM insights will use rule-based fallback")
 
 
 def image_to_base64(img: np.ndarray) -> str:
@@ -124,28 +127,25 @@ Quantitative pipeline metrics:
 - Severity Classification: {severity}
 - Risk Assessment: {risk}
 
-Using BOTH the visual findings AND the quantitative metrics, write a GPT-style structured explanation.
-Format it EXACTLY like this example (short lines, blank lines between paragraphs, no bullet points):
+Using BOTH the visual findings (tumor overlay boundary, bounding box) AND the quantitative metrics, write a highly professional, detailed, and structured Clinical Diagnostic Report.
+Format the response in clean Markdown with distinct sections. Do NOT use artificial short-line wrapping; write in natural, full-width sentences.
 
-The AI segmentation model detected
-a [finding] within the MRI scan.
+Your output must follow this format:
+### 1. Diagnostic Summary
+Write a professional summary explaining whether abnormal tissue has been detected, the overall confidence level, and the risk classification.
 
-The estimated tumor coverage is
-approximately [X]%,
-which is categorized as [severity]
-severity.
+### 2. Quantitative & Visual Findings
+- **Tumor Boundary & Mask**: Describe the visual evidence from the segmentation mask. Mention that the tumor area coverage is **{tumor_percentage:.2f}%** and the model's confidence is **{confidence:.1f}%**.
+- **Spatial Localization**: Describe the presence and positioning of the tumor bounding box if detected.
+- **Classification & Severity**: Elaborate on the **{severity}** severity grading and the associated **{risk}** level.
 
-The prediction confidence is
-[X]%,
-indicating a [strong/moderate/low] likelihood
-of abnormal tissue presence.
+### 3. Clinical Recommendations & Next Steps
+Provide a bulleted list of appropriate recommendations based on the findings (e.g., contrast-enhanced MRI scan, follow-up, radiological review, or immediate oncology consult).
 
-[One more paragraph about clinical recommendation.]
+### 4. Disclaimer
+Include a standard professional medical AI warning.
 
-Further clinical interpretation
-by a medical specialist is advised.
-
-Keep each line SHORT (under 45 characters). Use the actual numbers from the metrics. Be precise and clinical."""
+Be precise, clinical, and objective. Output ONLY the markdown report text."""
 
         content.append({"type": "text", "text": vision_prompt})
 
@@ -155,7 +155,7 @@ Keep each line SHORT (under 45 characters). Use the actual numbers from the metr
                 resp = openrouter_client.chat.completions.create(
                     model=OPENROUTER_VISION_MODEL,
                     messages=[{"role": "user", "content": content}],
-                    max_tokens=512,
+                    max_tokens=768,
                     temperature=0.3,
                 )
                 return resp.choices[0].message.content.strip(), True
@@ -173,33 +173,28 @@ Detection results:
 - Severity Classification: {severity}
 - Risk Assessment: {risk}
 
-Write a GPT-style structured explanation with SHORT lines (under 45 chars each) and blank lines between paragraphs.
-Format EXACTLY like this:
+Construct a highly professional, detailed, and structured Clinical Diagnostic Report based on these metrics.
+Format the response in clean Markdown with distinct sections. Do NOT use artificial short-line wrapping; write in natural, full-width sentences.
 
-The AI segmentation model detected
-a [finding description]
-within the MRI scan.
+Your output must follow this format:
+### 1. Diagnostic Summary
+Write a professional summary explaining whether abnormal tissue has been detected, the overall confidence level, and the risk classification.
 
-The estimated tumor coverage is
-approximately {tumor_percentage:.2f}%,
-which is categorized as {severity.lower()}
-severity.
+### 2. Quantitative & Visual Findings
+- **Tumor Boundary & Mask**: Mention the tumor area coverage of **{tumor_percentage:.2f}%** and the model's confidence of **{confidence:.1f}%**.
+- **Classification & Severity**: Elaborate on the **{severity}** severity grading and the associated **{risk}** level.
 
-The prediction confidence is
-{confidence:.1f}%,
-indicating a [strong/moderate] likelihood
-of [normal/abnormal] tissue presence.
+### 3. Clinical Recommendations & Next Steps
+Provide a bulleted list of appropriate clinical recommendations.
 
-[Clinical recommendation paragraph with short lines.]
+### 4. Disclaimer
+Include a standard professional medical AI warning.
 
-Further clinical interpretation
-by a medical specialist is advised.
-
-Output ONLY the explanation text, no headers, no markdown, no bullets."""
+Be precise, clinical, and objective. Output ONLY the markdown report text."""
             resp = openrouter_client.chat.completions.create(
                 model=OPENROUTER_TEXT_MODEL,
                 messages=[{"role": "user", "content": text_prompt}],
-                max_tokens=512,
+                max_tokens=768,
                 temperature=0.3,
             )
             return resp.choices[0].message.content.strip(), False
@@ -209,101 +204,78 @@ Output ONLY the explanation text, no headers, no markdown, no bullets."""
     # ── Rule-based GPT-style fallback ────────────────────────────────────────────────
     if not tumor_detected:
         return (
-            f"""The AI segmentation model found
-no significant abnormal regions
-within the MRI scan.
+            f"""### 1. Diagnostic Summary
+The AI segmentation pipeline has completed its analysis of the uploaded MRI scan. **No significant abnormal tissue regions or tumor patterns were detected** within the scan volume.
 
-The estimated abnormal coverage is
-approximately {tumor_percentage:.2f}%,
-which falls below the detection
-threshold for clinical concern.
+### 2. Quantitative & Visual Findings
+- **Tumor Area Coverage**: The estimated abnormal tissue coverage is **0.00%** (below the clinical detection threshold of 0.05%).
+- **AI Confidence Level**: The pipeline reports a confidence score of **{confidence:.1f}%**, indicating a very high likelihood of normal structural patterns.
+- **Severity & Risk Assessment**: Classified as **No Severity (None)** with **No Risk** indicated.
 
-The prediction confidence is
-{confidence:.1f}%,
-indicating a strong likelihood
-of normal tissue patterns.
+### 3. Clinical Recommendations & Next Steps
+- **Routine Monitoring**: Standard clinical follow-up as per standard protocol.
+- **Clinical Correlation**: Please correlate these findings with the patient's history and symptoms.
+- **Radiologist Review**: A standard radiologist review is recommended to confirm structural integrity.
 
-Routine follow-up imaging
-is recommended as per standard
-clinical protocol.
-
-Further clinical interpretation
-by a medical specialist is advised.""",
+### 4. Disclaimer
+*This report is generated by an automated AI pipeline and is intended for clinical assistance only. Final diagnoses must be made by qualified medical specialists.*""",
             False,
         )
     elif tumor_percentage < 1.0:
         return (
-            f"""The AI segmentation model detected
-a possible abnormal lesion region
-within the MRI scan.
+            f"""### 1. Diagnostic Summary
+The AI segmentation pipeline has detected a **small abnormal region** within the MRI scan. The overall risk profile is classified as **Low Risk**.
 
-The estimated tumor coverage is
-approximately {tumor_percentage:.2f}%,
-which is categorized as small
-severity.
+### 2. Quantitative & Visual Findings
+- **Tumor Area Coverage**: The abnormal region covers approximately **{tumor_percentage:.2f}%** of the scan area.
+- **AI Confidence Level**: The pipeline reports a confidence score of **{confidence:.1f}%**, indicating a moderate probability of abnormal tissue presence.
+- **Severity & Risk Assessment**: Classified as **Small** severity with **Low Risk** parameters.
 
-The prediction confidence is
-{confidence:.1f}%,
-indicating a moderate likelihood
-of abnormal tissue presence.
+### 3. Clinical Recommendations & Next Steps
+- **Specialist Consultation**: Schedule a routine evaluation with a neuro-oncology specialist.
+- **Advanced Imaging**: Consider a follow-up high-resolution contrast-enhanced MRI in 3–6 months to monitor any changes.
+- **Symptomatic Correlation**: Evaluate clinical symptoms to check for neurological correlates.
 
-This finding warrants further
-clinical evaluation and expert
-radiological review before
-any clinical decision.
-
-Further clinical interpretation
-by a medical specialist is advised.""",
+### 4. Disclaimer
+*This report is generated by an automated AI pipeline and is intended for clinical assistance only. Final diagnoses must be made by qualified medical specialists.*""",
             False,
         )
     elif tumor_percentage < 5.0:
         return (
-            f"""The AI segmentation model detected
-a distinct abnormal mass region
-within the MRI scan.
+            f"""### 1. Diagnostic Summary
+The AI segmentation pipeline has identified a **distinct abnormal mass region** within the MRI scan. The overall risk profile is classified as **Moderate Risk**, requiring formal radiological review.
 
-The estimated tumor coverage is
-approximately {tumor_percentage:.2f}%,
-which is categorized as medium
-severity.
+### 2. Quantitative & Visual Findings
+- **Tumor Area Coverage**: The predicted tumor mass covers approximately **{tumor_percentage:.2f}%** of the scan area.
+- **AI Confidence Level**: The pipeline reports a confidence score of **{confidence:.1f}%**, indicating a strong probability of abnormal tissue presence.
+- **Severity & Risk Assessment**: Classified as **Medium** severity with **Moderate Risk** parameters.
 
-The prediction confidence is
-{confidence:.1f}%,
-indicating a strong likelihood
-of abnormal tissue presence.
+### 3. Clinical Recommendations & Next Steps
+- **Urgent Specialist Consultation**: Refer to a neurosurgeon or neuro-oncologist for detailed review.
+- **Contrast-Enhanced Scan**: Perform a gadolinium-enhanced MRI to better define structural boundaries.
+- **Biopsy Consideration**: A stereotactic biopsy may be discussed if clinically indicated to determine pathology.
 
-Immediate specialist consultation,
-advanced contrast MRI or CT imaging,
-and biopsy consideration
-are strongly recommended.
-
-Further clinical interpretation
-by a medical specialist is advised.""",
+### 4. Disclaimer
+*This report is generated by an automated AI pipeline and is intended for clinical assistance only. Final diagnoses must be made by qualified medical specialists.*""",
             False,
         )
     else:
         return (
-            f"""The AI segmentation model detected
-a large abnormal region
-within the MRI scan.
+            f"""### 1. Diagnostic Summary
+The AI segmentation pipeline has detected a **large abnormal region** within the MRI scan. The overall risk profile is classified as **High Risk**, indicating an urgent need for clinical correlation and intervention.
 
-The estimated tumor coverage is
-approximately {tumor_percentage:.2f}%,
-which is categorized as high
-severity.
+### 2. Quantitative & Visual Findings
+- **Tumor Area Coverage**: The predicted tumor mass covers **{tumor_percentage:.2f}%** of the scan area, representing a significant volume.
+- **AI Confidence Level**: The pipeline reports a confidence score of **{confidence:.1f}%**, indicating a very high probability of abnormal tissue.
+- **Severity & Risk Assessment**: Classified as **Large** severity with **High Risk** parameters.
 
-The prediction confidence is
-{confidence:.1f}%,
-indicating a very strong likelihood
-of significant abnormal tissue.
+### 3. Clinical Recommendations & Next Steps
+- **Urgent Multidisciplinary Review**: Immediate referral to a neuro-oncology multidisciplinary team (MDT).
+- **Comprehensive Diagnostic Workup**: Complete high-resolution MRI protocol (including contrast, perfusion, and spectroscopy).
+- **Intervention Planning**: Initiate planning for surgical resection, radiotherapy, or chemotherapy as appropriate.
 
-Urgent multidisciplinary oncology
-review, contrast-enhanced imaging,
-and immediate clinical intervention
-are strongly advised.
-
-Further clinical interpretation
-by a medical specialist is advised.""",
+### 4. Disclaimer
+*This report is generated by an automated AI pipeline and is intended for clinical assistance only. Final diagnoses must be made by qualified medical specialists.*""",
             False,
         )
 
@@ -330,11 +302,11 @@ def read_root():
 
 
 @app.post("/predict")
-async def predict(file: UploadFile = File(...)):
+def predict(file: UploadFile = File(...)):
     start_time = time.time()
 
     # ── Read image ──────────────────────────────────────────────────────────
-    contents = await file.read()
+    contents = file.file.read()
     nparr    = np.frombuffer(contents, np.uint8)
     original_img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
     if original_img is None:

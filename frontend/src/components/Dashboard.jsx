@@ -34,6 +34,123 @@ const RISK_COLOR = {
   'High Risk':     { color: '#dc2626', bg: 'rgba(220,38,38,0.08)',   border: 'rgba(220,38,38,0.25)' },
 };
 
+// ─── Simple custom Markdown parser & renderer ──────────────────────────────
+const parseItalic = (text) => {
+  if (!text) return '';
+  const parts = text.split(/(\*.*?\*)/g);
+  return parts.map((part, i) => {
+    if (part.startsWith('*') && part.endsWith('*')) {
+      return (
+        <em key={i} style={{ fontStyle: 'italic', color: '#475569' }}>
+          {part.slice(1, -1)}
+        </em>
+      );
+    }
+    return part;
+  });
+};
+
+const parseBoldAndItalic = (text) => {
+  if (!text) return '';
+  const parts = text.split(/(\*\*.*?\*\*)/g);
+  return parts.map((part, i) => {
+    if (part.startsWith('**') && part.endsWith('**')) {
+      const boldText = part.slice(2, -2);
+      return (
+        <strong key={i} style={{ fontWeight: '700', color: '#0f172a' }}>
+          {parseItalic(boldText)}
+        </strong>
+      );
+    }
+    return parseItalic(part);
+  });
+};
+
+const renderMarkdown = (text) => {
+  if (!text) return null;
+  const lines = text.split('\n');
+  return lines.map((line, idx) => {
+    const trimmed = line.trim();
+    
+    // Check for headers (e.g. ### Header)
+    if (trimmed.startsWith('### ')) {
+      return (
+        <h5 key={idx} style={{ 
+          fontSize: '15px', 
+          fontWeight: '700', 
+          color: '#1e3a8a', 
+          marginTop: '16px', 
+          marginBottom: '8px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '6px'
+        }}>
+          {parseBoldAndItalic(trimmed.slice(4))}
+        </h5>
+      );
+    }
+    if (trimmed.startsWith('## ')) {
+      return (
+        <h4 key={idx} style={{ 
+          fontSize: '17px', 
+          fontWeight: '800', 
+          color: '#1e3a8a', 
+          marginTop: '20px', 
+          marginBottom: '10px' 
+        }}>
+          {parseBoldAndItalic(trimmed.slice(3))}
+        </h4>
+      );
+    }
+    if (trimmed.startsWith('# ')) {
+      return (
+        <h3 key={idx} style={{ 
+          fontSize: '19px', 
+          fontWeight: '900', 
+          color: '#1e3a8a', 
+          marginTop: '24px', 
+          marginBottom: '12px' 
+        }}>
+          {parseBoldAndItalic(trimmed.slice(2))}
+        </h3>
+      );
+    }
+    
+    // Check for bullet list items
+    if (trimmed.startsWith('- ') || trimmed.startsWith('* ')) {
+      return (
+        <li key={idx} style={{ 
+          fontSize: '13.5px', 
+          color: '#334155', 
+          marginLeft: '20px', 
+          marginBottom: '6px', 
+          lineHeight: '1.6',
+          listStyleType: 'disc'
+        }}>
+          {parseBoldAndItalic(trimmed.slice(2))}
+        </li>
+      );
+    }
+
+    // Empty line / paragraph break
+    if (trimmed === '') {
+      return <div key={idx} style={{ height: '8px' }} />;
+    }
+
+    // Regular line
+    return (
+      <p key={idx} style={{ 
+        fontSize: '13.5px', 
+        lineHeight: '1.65', 
+        color: '#334155', 
+        margin: '6px 0' 
+      }}>
+        {parseBoldAndItalic(line)}
+      </p>
+    );
+  });
+};
+
 const Dashboard = ({ data, onReset }) => {
   const reportRef = useRef(null);
   const [insightOpen, setInsightOpen] = useState(true);
@@ -71,10 +188,11 @@ const Dashboard = ({ data, onReset }) => {
 
   // ─── Style helpers ────────────────────────────────────────────────────────
   const card = (extra = {}) => ({
-    background: '#fff',
+    background: 'var(--bg-card-solid)',
     borderRadius: '16px',
-    border: '1px solid rgba(37,99,235,0.1)',
-    boxShadow: '0 4px 16px rgba(0,0,0,0.06)',
+    border: '1px solid var(--border-color)',
+    boxShadow: 'var(--shadow-md)',
+    transition: 'background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease',
     ...extra,
   });
 
@@ -99,10 +217,10 @@ const Dashboard = ({ data, onReset }) => {
       {/* ── Toolbar ── */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px' }}>
         <div>
-          <h2 style={{ fontSize: '26px', fontWeight: '800', color: '#0f172a', letterSpacing: '-0.5px', margin: 0 }}>
+          <h2 style={{ fontSize: '26px', fontWeight: '800', color: 'var(--text-primary)', letterSpacing: '-0.5px', margin: 0 }}>
             Diagnostic Report
           </h2>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginTop: '6px', fontSize: '12px', color: '#64748b' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginTop: '6px', fontSize: '12px', color: 'var(--text-secondary)' }}>
             <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
               <ClockIcon /> {data.processing_time}s processing
             </span>
@@ -111,7 +229,7 @@ const Dashboard = ({ data, onReset }) => {
               <ActivityIcon /> Analysis complete
             </span>
             <span>•</span>
-            <span style={{ fontFamily: 'monospace', color: '#2563eb', fontWeight: '600', fontSize: '11px' }}>
+            <span style={{ fontFamily: 'monospace', color: 'var(--accent-indigo)', fontWeight: '600', fontSize: '11px' }}>
               {scanId}
             </span>
           </div>
@@ -120,8 +238,9 @@ const Dashboard = ({ data, onReset }) => {
           <button onClick={exportPDF} style={{
             display: 'flex', alignItems: 'center', gap: '7px',
             padding: '9px 18px', borderRadius: '10px', cursor: 'pointer',
-            background: '#f1f5f9', border: '1px solid #e2e8f0',
-            color: '#475569', fontSize: '13px', fontWeight: '600',
+            background: 'var(--border-color)', border: '1px solid var(--border-color)',
+            color: 'var(--text-primary)', fontSize: '13px', fontWeight: '600',
+            transition: 'background 0.2s ease, border-color 0.2s ease, color 0.2s ease',
           }}>
             <DownloadIcon /> Export PDF
           </button>
@@ -156,10 +275,10 @@ const Dashboard = ({ data, onReset }) => {
             {data.tumor_detected ? <AlertIcon /> : <ShieldIcon />}
           </div>
           <div>
-            <h3 style={{ fontSize: '18px', fontWeight: '700', color: '#0f172a', margin: '0 0 4px' }}>
+            <h3 style={{ fontSize: '18px', fontWeight: '700', color: 'var(--text-primary)', margin: '0 0 4px' }}>
               {data.tumor_detected ? 'Abnormality Detected' : 'No Abnormality Found'}
             </h3>
-            <p style={{ fontSize: '13px', color: '#64748b', margin: 0 }}>
+            <p style={{ fontSize: '13px', color: 'var(--text-secondary)', margin: 0 }}>
               {data.tumor_detected
                 ? 'U-Net++ identified regions of interest requiring clinical evaluation.'
                 : 'Segmentation model reports no significant tumor regions.'}
@@ -222,12 +341,12 @@ const Dashboard = ({ data, onReset }) => {
           >
             <h4 style={{
               fontSize: '11px', fontWeight: '700', letterSpacing: '0.07em', textTransform: 'uppercase',
-              color: '#64748b', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '6px',
+              color: 'var(--text-secondary)', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '6px',
             }}>
               <BarIcon /> Tissue Distribution
             </h4>
             <TissueChart tumorPct={data.tumor_percentage} />
-            <div style={{ display: 'flex', gap: '16px', marginTop: '12px', fontSize: '12px', color: '#64748b' }}>
+            <div style={{ display: 'flex', gap: '16px', marginTop: '12px', fontSize: '12px', color: 'var(--text-secondary)' }}>
               <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                 <span style={{ width: '10px', height: '10px', borderRadius: '3px', background: '#3b82f6', display: 'inline-block' }} />
                 Healthy {(100 - data.tumor_percentage).toFixed(2)}%
@@ -245,14 +364,14 @@ const Dashboard = ({ data, onReset }) => {
       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.28 }}
         style={card({ padding: '24px' })}
       >
-        <h4 style={{ fontSize: '14px', fontWeight: '700', color: '#0f172a', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <h4 style={{ fontSize: '14px', fontWeight: '700', color: 'var(--text-primary)', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '8px' }}>
           <ActivityIcon /> Confidence Breakdown
         </h4>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
           {CONF_BARS.map(m => (
             <div key={m.label}>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px' }}>
-                <span style={{ fontSize: '13px', color: '#475569', fontWeight: '500' }}>{m.label}</span>
+                <span style={{ fontSize: '13px', color: 'var(--text-secondary)', fontWeight: '500' }}>{m.label}</span>
                 <span style={{ fontSize: '13px', fontWeight: '700', color: m.color, fontFamily: 'monospace' }}>
                   {m.value.toFixed(1)}%
                 </span>
@@ -282,10 +401,10 @@ const Dashboard = ({ data, onReset }) => {
           style={{
             width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
             padding: '18px 24px', background: 'none', border: 'none', cursor: 'pointer',
-            borderBottom: insightOpen ? '1px solid rgba(37,99,235,0.1)' : 'none',
+            borderBottom: insightOpen ? '1px solid var(--border-color)' : 'none',
           }}
         >
-          <h4 style={{ fontSize: '14px', fontWeight: '700', color: '#0f172a', display: 'flex', alignItems: 'center', gap: '8px', margin: 0 }}>
+          <h4 style={{ fontSize: '14px', fontWeight: '700', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '8px', margin: 0 }}>
             <BrainIcon />
             AI Clinical Insight
             {data.image_insight_powered && (
@@ -311,11 +430,12 @@ const Dashboard = ({ data, onReset }) => {
             >
               <div style={{ padding: '20px 24px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
                 <div style={{
-                  background: 'rgba(37,99,235,0.04)', borderLeft: '3px solid #2563eb',
-                  borderRadius: '0 12px 12px 0', padding: '16px 20px',
+                  background: 'var(--bg-card)', borderLeft: '4px solid var(--accent-blue)',
+                  borderRadius: '0 16px 16px 0', padding: '20px 24px',
+                  transition: 'background 0.3s ease, border-color 0.3s ease',
                 }}>
-                  <p style={{ fontSize: '14px', lineHeight: '1.75', color: '#1e293b', margin: 0 }}>
-                    {displayedInsight}
+                  <div style={{ margin: 0 }}>
+                    {renderMarkdown(displayedInsight)}
                     {!typingDone && (
                       <span style={{
                         display: 'inline-block', width: '2px', height: '16px',
@@ -323,7 +443,7 @@ const Dashboard = ({ data, onReset }) => {
                         animation: 'pulse 1s ease-in-out infinite',
                       }} />
                     )}
-                  </p>
+                  </div>
                 </div>
                 <p style={{ fontSize: '12px', color: '#94a3b8', display: 'flex', alignItems: 'center', gap: '6px', margin: 0 }}>
                   <WarnIcon />

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Home from './pages/Home';
 import { Toaster } from 'react-hot-toast';
-import { Brain } from 'lucide-react';
+import { Brain, Sun, Moon } from 'lucide-react';
 import { GridBackground } from './components/ReactBitsComponents';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -71,13 +71,13 @@ const Ring = ({ value, max, color, size = 90, strokeWidth = 8, label, unit, benc
           <span style={{ fontSize: '17px', fontWeight: '800', color, lineHeight: 1, fontFamily: 'monospace' }}>
             {value}
           </span>
-          {unit && <span style={{ fontSize: '10px', color: '#94a3b8', fontWeight: '600' }}>{unit}</span>}
+          {unit && <span style={{ fontSize: '10px', color: 'var(--text-secondary)', fontWeight: '600' }}>{unit}</span>}
         </div>
       </div>
       <div style={{ textAlign: 'center' }}>
-        <div style={{ fontSize: '11px', fontWeight: '700', color: '#0f172a', letterSpacing: '-0.2px' }}>{label}</div>
-        <div style={{ fontSize: '10px', color: '#94a3b8', marginTop: '2px' }}>
-          Benchmark: <span style={{ color: '#475569', fontWeight: '600' }}>{benchmark}</span>
+        <div style={{ fontSize: '11px', fontWeight: '700', color: 'var(--text-primary)', letterSpacing: '-0.2px' }}>{label}</div>
+        <div style={{ fontSize: '10px', color: 'var(--text-secondary)', marginTop: '2px' }}>
+          Benchmark: <span style={{ color: 'var(--text-secondary)', fontWeight: '600' }}>{benchmark}</span>
         </div>
       </div>
     </div>
@@ -304,6 +304,16 @@ function App() {
   const [apiOnline, setApiOnline] = useState(null);
   const [activePanel, setActivePanel] = useState(null);
   const panelRef = useRef(null);
+  const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'dark');
+
+  useEffect(() => {
+    if (theme === 'light') {
+      document.documentElement.classList.add('light');
+    } else {
+      document.documentElement.classList.remove('light');
+    }
+    localStorage.setItem('theme', theme);
+  }, [theme]);
 
   useEffect(() => {
     const check = async () => {
@@ -336,7 +346,8 @@ function App() {
   return (
     <div style={{
       minHeight: '100vh', display: 'flex', flexDirection: 'column',
-      background: '#f8fafc', fontFamily: "'Inter', sans-serif",
+      background: 'var(--bg-primary)', color: 'var(--text-primary)',
+      fontFamily: "'Inter', sans-serif", transition: 'background-color 0.3s ease, color 0.3s ease',
     }}>
       <GridBackground>
         {/* ── Header ── */}
@@ -346,11 +357,12 @@ function App() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             style={{
-              background: 'rgba(248,250,252,0.92)',
+              background: 'var(--bg-card)',
               backdropFilter: 'blur(16px)',
               WebkitBackdropFilter: 'blur(16px)',
-              borderBottom: '1px solid rgba(37,99,235,0.1)',
-              boxShadow: '0 1px 24px rgba(37,99,235,0.06)',
+              borderBottom: '1px solid var(--border-color)',
+              boxShadow: 'var(--shadow-sm)',
+              transition: 'background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease',
             }}
           >
             <div style={{
@@ -369,10 +381,10 @@ function App() {
                   <Brain size={22} color="#fff" />
                 </div>
                 <div>
-                  <div style={{ fontSize: '20px', fontWeight: '800', letterSpacing: '-0.5px', color: '#0f172a', lineHeight: 1 }}>
+                  <div style={{ fontSize: '20px', fontWeight: '800', letterSpacing: '-0.5px', color: 'var(--text-primary)', lineHeight: 1 }}>
                     MRI<span style={{ color: '#2563eb' }}>·</span>AI
                   </div>
-                  <div style={{ fontSize: '11px', color: '#94a3b8', fontWeight: '500', marginTop: '2px' }}>
+                  <div style={{ fontSize: '11px', color: 'var(--text-secondary)', fontWeight: '500', marginTop: '2px' }}>
                     Tumor Detection System
                   </div>
                 </div>
@@ -389,15 +401,15 @@ function App() {
                       onClick={() => handleNavClick(link)}
                       style={{
                         fontSize: '13px', fontWeight: '600',
-                        color: isActive ? '#2563eb' : '#64748b',
+                        color: isActive ? 'var(--accent-indigo)' : 'var(--text-secondary)',
                         textDecoration: 'none', cursor: 'pointer',
                         padding: '6px 14px', borderRadius: '8px', border: 'none',
-                        background: isActive ? 'rgba(37,99,235,0.08)' : 'transparent',
+                        background: isActive ? 'rgba(99,102,241,0.12)' : 'transparent',
                         transition: 'all 0.2s', letterSpacing: '0.01em',
                         display: 'flex', alignItems: 'center', gap: '5px',
                       }}
-                      onMouseEnter={e => { if (!isActive) e.target.style.color = '#2563eb'; }}
-                      onMouseLeave={e => { if (!isActive) e.target.style.color = '#64748b'; }}
+                      onMouseEnter={e => { if (!isActive) e.currentTarget.style.color = 'var(--accent-indigo)'; }}
+                      onMouseLeave={e => { if (!isActive) e.currentTarget.style.color = 'var(--text-secondary)'; }}
                     >
                       {link}
                       <motion.span
@@ -414,37 +426,71 @@ function App() {
                 })}
               </nav>
 
-              {/* Status pill */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.4 }}
-                style={{
-                  display: 'flex', alignItems: 'center', gap: '8px',
-                  padding: '6px 14px', borderRadius: '999px',
-                  background: apiOnline === true ? 'rgba(34,197,94,0.10)'
-                    : apiOnline === false ? 'rgba(239,68,68,0.10)'
-                    : 'rgba(99,102,241,0.10)',
-                  border: `1px solid ${apiOnline === true ? 'rgba(34,197,94,0.3)'
-                    : apiOnline === false ? 'rgba(239,68,68,0.3)'
-                    : 'rgba(99,102,241,0.3)'}`,
-                }}
-              >
-                <motion.span
-                  animate={apiOnline !== false ? { scale: [1, 1.5, 1], opacity: [1, 0.5, 1] } : {}}
-                  transition={{ duration: 1.5, repeat: Infinity }}
+              {/* Controls: Theme Toggle & API Status */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+                {/* Theme Toggle Button */}
+                <button
+                  onClick={() => setTheme(prev => prev === 'light' ? 'dark' : 'light')}
                   style={{
-                    width: '7px', height: '7px', borderRadius: '50%', display: 'block',
-                    background: apiOnline === true ? '#22c55e' : apiOnline === false ? '#ef4444' : '#818cf8',
+                    background: 'var(--border-color)',
+                    border: '1px solid var(--border-color)',
+                    borderRadius: '10px',
+                    width: '38px',
+                    height: '38px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    cursor: 'pointer',
+                    color: 'var(--text-secondary)',
+                    transition: 'all 0.25s ease',
                   }}
-                />
-                <span style={{
-                  fontSize: '12px', fontWeight: '700', letterSpacing: '0.02em',
-                  color: apiOnline === true ? '#16a34a' : apiOnline === false ? '#dc2626' : '#6366f1',
-                }}>
-                  API {apiOnline === null ? 'Checking…' : apiOnline ? 'Online' : 'Offline'}
-                </span>
-              </motion.div>
+                  onMouseEnter={e => {
+                    e.currentTarget.style.color = 'var(--text-primary)';
+                    e.currentTarget.style.background = 'rgba(99,102,241,0.12)';
+                    e.currentTarget.style.borderColor = 'rgba(99,102,241,0.3)';
+                  }}
+                  onMouseLeave={e => {
+                    e.currentTarget.style.color = 'var(--text-secondary)';
+                    e.currentTarget.style.background = 'var(--border-color)';
+                    e.currentTarget.style.borderColor = 'var(--border-color)';
+                  }}
+                  title={theme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'}
+                >
+                  {theme === 'light' ? <Moon size={18} /> : <Sun size={18} />}
+                </button>
+
+                {/* Status pill */}
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.4 }}
+                  style={{
+                    display: 'flex', alignItems: 'center', gap: '8px',
+                    padding: '6px 14px', borderRadius: '999px',
+                    background: apiOnline === true ? 'rgba(34,197,94,0.10)'
+                      : apiOnline === false ? 'rgba(239,68,68,0.10)'
+                      : 'rgba(99,102,241,0.10)',
+                    border: `1px solid ${apiOnline === true ? 'rgba(34,197,94,0.3)'
+                      : apiOnline === false ? 'rgba(239,68,68,0.3)'
+                      : 'rgba(99,102,241,0.3)'}`,
+                  }}
+                >
+                  <motion.span
+                    animate={apiOnline !== false ? { scale: [1, 1.5, 1], opacity: [1, 0.5, 1] } : {}}
+                    transition={{ duration: 1.5, repeat: Infinity }}
+                    style={{
+                      width: '7px', height: '7px', borderRadius: '50%', display: 'block',
+                      background: apiOnline === true ? '#22c55e' : apiOnline === false ? '#ef4444' : '#818cf8',
+                    }}
+                  />
+                  <span style={{
+                    fontSize: '12px', fontWeight: '700', letterSpacing: '0.02em',
+                    color: apiOnline === true ? '#16a34a' : apiOnline === false ? '#dc2626' : '#6366f1',
+                  }}>
+                    API {apiOnline === null ? 'Checking…' : apiOnline ? 'Online' : 'Offline'}
+                  </span>
+                </motion.div>
+              </div>
             </div>
           </motion.header>
 
@@ -459,11 +505,12 @@ function App() {
                 transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
                 style={{
                   position: 'absolute', left: 0, right: 0,
-                  background: 'rgba(255,255,255,0.98)',
+                  background: 'var(--bg-card-solid)',
                   backdropFilter: 'blur(20px)',
-                  borderBottom: '1px solid rgba(37,99,235,0.12)',
-                  boxShadow: '0 16px 48px rgba(37,99,235,0.12)',
+                  borderBottom: '1px solid var(--border-color)',
+                  boxShadow: 'var(--shadow-lg)',
                   transformOrigin: 'top',
+                  transition: 'background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease',
                   zIndex: 99,
                 }}
               >
@@ -484,10 +531,10 @@ function App() {
         </main>
 
         {/* ── Footer ── */}
-        <footer style={{ borderTop: '1px solid rgba(37,99,235,0.08)', background: 'rgba(248,250,252,0.9)', padding: '20px 24px' }}>
+        <footer style={{ borderTop: '1px solid var(--border-color)', background: 'var(--bg-card)', padding: '20px 24px', transition: 'background-color 0.3s ease, border-color 0.3s ease' }}>
           <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <span style={{ fontSize: '12px', color: '#94a3b8' }}>MRI·AI &nbsp;•&nbsp; ESRGAN + U-Net++ Segmentation Pipeline</span>
-            <span style={{ fontSize: '12px', color: '#2563eb', opacity: 0.7, fontWeight: '600' }}>FOR CLINICAL RESEARCH USE ONLY</span>
+            <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>MRI·AI &nbsp;•&nbsp; ESRGAN + U-Net++ Segmentation Pipeline</span>
+            <span style={{ fontSize: '12px', color: 'var(--accent-blue)', opacity: 0.8, fontWeight: '700' }}>FOR CLINICAL RESEARCH USE ONLY</span>
           </div>
         </footer>
 
@@ -495,9 +542,9 @@ function App() {
           position="bottom-center"
           toastOptions={{
             style: {
-              background: '#fff', color: '#0f172a',
-              border: '1px solid #e2e8f0', borderRadius: '12px',
-              boxShadow: '0 8px 24px rgba(0,0,0,0.1)',
+              background: 'var(--bg-card-solid)', color: 'var(--text-primary)',
+              border: '1px solid var(--border-color)', borderRadius: '12px',
+              boxShadow: 'var(--shadow-md)',
               fontFamily: 'Inter, sans-serif', fontSize: '14px',
             },
           }}
