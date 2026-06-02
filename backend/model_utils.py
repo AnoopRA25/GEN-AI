@@ -162,18 +162,42 @@ def load_unet(path: str, device: torch.device) -> smp.UnetPlusPlus:
     logger.info(f"Loading U-Net++ from: {path}")
     raw = torch.load(path, map_location=device)
 
+    # 1. Extract state_dict
     if isinstance(raw, dict):
-        sd = raw.get("state_dict") or raw.get("model") or raw
-        model = smp.UnetPlusPlus(
-            encoder_name="resnet34",
-            encoder_weights=None,
-            in_channels=3,
-            classes=1,
-            activation=None,
-        )
-        model.load_state_dict(sd, strict=False)
+        sd = raw.get("model_state") or raw.get("state_dict") or raw.get("model") or raw
     else:
-        model = raw
+        sd = raw
+
+    # 2. Detect encoder name
+    encoder_name = "resnet34"
+    if isinstance(raw, dict) and "encoder" in raw and isinstance(raw["encoder"], str):
+        encoder_name = raw["encoder"]
+    else:
+        # Heuristic check
+        if any("conv_stem" in k or "_blocks" in k for k in sd.keys()):
+            encoder_name = "efficientnet-b4"
+
+    # 3. Detect attention type
+    decoder_attention_type = None
+    if any("attention" in k or "cSE" in k or "sSE" in k for k in sd.keys()):
+        decoder_attention_type = "scse"
+
+    logger.info(f"Auto-configured U-Net++ → encoder={encoder_name}, attention={decoder_attention_type}")
+
+    model = smp.UnetPlusPlus(
+        encoder_name=encoder_name,
+        encoder_weights=None,
+        in_channels=3,
+        classes=1,
+        activation=None,
+        decoder_attention_type=decoder_attention_type,
+    )
+    
+    missing, unexpected = model.load_state_dict(sd, strict=False)
+    if missing:
+        logger.warning(f"U-Net++ Missing keys: {len(missing)}")
+    if unexpected:
+        logger.warning(f"U-Net++ Unexpected keys: {len(unexpected)}")
 
     model.to(device).eval()
     logger.info("✓ U-Net++ loaded")

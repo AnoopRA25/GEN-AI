@@ -14,7 +14,7 @@ except Exception as e:
     traceback.print_exc()
 
 try:
-    unet = load_unet('models/best_unetplusplus.pth', 'cpu')
+    unet = load_unet('models/best_unetplusplus_v2.pth', 'cpu')
     if unet:
         print("UNet++ loaded successfully.")
     else:

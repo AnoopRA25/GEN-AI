@@ -36,7 +36,7 @@ logger.info(f"Using device: {DEVICE}")
 # ── Model paths ────────────────────────────────────────────────────────────
 BASE_DIR    = Path(__file__).parent
 ESRGAN_PATH = str(BASE_DIR / "models" / "best_esrgan_generator.pth")
-UNET_PATH   = str(BASE_DIR / "models" / "best_unetplusplus.pth")
+UNET_PATH   = str(BASE_DIR / "models" / "best_unetplusplus_v2.pth")
 
 # ── Load models at startup ─────────────────────────────────────────────────
 esrgan_model = load_esrgan(ESRGAN_PATH, DEVICE)
