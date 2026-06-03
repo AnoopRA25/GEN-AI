@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Upload from '../components/Upload';
 import Dashboard from '../components/Dashboard';
-import { FadeIn, GradientText, PopInButton, FloatingCard, CountUp } from '../components/ReactBitsComponents';
+import { FadeIn, GradientText, PopInButton, FloatingCard, GlowCard, CountUp } from '../components/ReactBitsComponents';
 
 // ─── Icon components (inline SVG for reliability) ─────────────────────────────
 const UploadIcon = () => (
@@ -41,34 +41,59 @@ const ShieldIcon = () => (
   </svg>
 );
 
+// ─── Typewriter hook ─────────────────────────────────────────────────────────
+const useTypewriter = (text, speed = 60, delay = 300) => {
+  const [displayed, setDisplayed] = useState('');
+  const [done, setDone] = useState(false);
+
+  useEffect(() => {
+    setDisplayed('');
+    setDone(false);
+    let i = 0;
+    const timeout = setTimeout(() => {
+      const iv = setInterval(() => {
+        i++;
+        setDisplayed(text.slice(0, i));
+        if (i >= text.length) { clearInterval(iv); setDone(true); }
+      }, speed);
+      return () => clearInterval(iv);
+    }, delay);
+    return () => clearTimeout(timeout);
+  }, [text, speed, delay]);
+
+  return { displayed, done };
+};
+
 const FEATURES = [
   {
-    icon: <ZapIcon />, color: '#2563eb', bg: 'rgba(37,99,235,0.08)',
+    icon: <ZapIcon />, color: '#d4a853', bg: 'rgba(212,168,83,0.08)',
     badge: 'ENHANCEMENT', title: 'ESRGAN Super-Resolution',
     desc: 'AI-powered super-resolution upscales low-resolution MRI scans 4× for significantly clearer diagnostic detail.',
   },
   {
-    icon: <MicroscopeIcon />, color: '#7c3aed', bg: 'rgba(124,58,237,0.08)',
+    icon: <MicroscopeIcon />, color: '#9b8ec4', bg: 'rgba(155,142,196,0.08)',
     badge: 'SEGMENTATION', title: 'U-Net++ Segmentation',
     desc: 'Deep learning encoder-decoder network precisely isolates and outlines tumor boundaries with pixel-level accuracy.',
   },
   {
-    icon: <FileIcon />, color: '#0891b2', bg: 'rgba(8,145,178,0.08)',
+    icon: <FileIcon />, color: '#5ea8a8', bg: 'rgba(94,168,168,0.08)',
     badge: 'REPORTING', title: 'NLP Clinical Report',
     desc: 'Gemini Vision analyzes scan images and generates clinical insights with risk classifications for treating clinicians.',
   },
 ];
 
 const STATS = [
-  { value: '94', suffix: '%+', label: 'Accuracy', color: '#2563eb', bg: 'rgba(37,99,235,0.08)' },
-  { value: '2',  suffix: 's',  label: 'Processing Speed', color: '#0891b2', bg: 'rgba(8,145,178,0.08)' },
-  { value: '5',  suffix: '',   label: 'Output Formats', color: '#7c3aed', bg: 'rgba(124,58,237,0.08)' },
-  { value: '100',suffix: '%',  label: 'HIPAA Compliant', color: '#059669', bg: 'rgba(5,150,105,0.08)' },
+  { value: '94', suffix: '%+', label: 'Accuracy', color: '#d4a853', bg: 'rgba(212,168,83,0.08)' },
+  { value: '2',  suffix: 's',  label: 'Processing Speed', color: '#5ea8a8', bg: 'rgba(94,168,168,0.08)' },
+  { value: '5',  suffix: '',   label: 'Output Formats', color: '#9b8ec4', bg: 'rgba(155,142,196,0.08)' },
+
 ];
 
 const Home = () => {
   const [result, setResult] = useState(null);
   const [showUpload, setShowUpload] = useState(false);
+  const { displayed: heroText, done: heroDone } = useTypewriter('AI MRI Tumor', 55, 400);
+  const { displayed: heroText2, done: heroDone2 } = useTypewriter('Detection', 55, 1200);
 
   // ─── Styles ──────────────────────────────────────────────────────────────────
   const S = {
@@ -79,15 +104,15 @@ const Home = () => {
     badge: {
       display: 'inline-flex', alignItems: 'center', gap: '8px',
       padding: '6px 16px', borderRadius: '999px',
-      background: 'rgba(37,99,235,0.08)',
-      border: '1px solid rgba(37,99,235,0.18)',
-      color: '#2563eb', fontSize: '12px', fontWeight: '700',
+      background: 'rgba(212,168,83,0.06)',
+      border: '1px solid rgba(212,168,83,0.18)',
+      color: '#d4a853', fontSize: '12px', fontWeight: '700',
       letterSpacing: '0.06em', textTransform: 'uppercase',
       marginBottom: '28px',
     },
     heroTitle: {
       fontSize: 'clamp(44px, 6vw, 80px)',
-      fontWeight: '900', letterSpacing: '-2px', lineHeight: 1.05,
+      fontWeight: '900', letterSpacing: '-2.5px', lineHeight: 1.05,
       color: 'var(--text-primary)', marginBottom: '20px',
     },
     heroDesc: {
@@ -97,18 +122,18 @@ const Home = () => {
     btnPrimary: {
       display: 'inline-flex', alignItems: 'center', gap: '10px',
       padding: '14px 32px', borderRadius: '14px',
-      background: 'linear-gradient(135deg, #1d4ed8 0%, #2563eb 60%, #0ea5e9 100%)',
-      color: '#fff', fontSize: '16px', fontWeight: '700',
+      background: 'linear-gradient(135deg, #c09038 0%, #d4a853 50%, #c07850 100%)',
+      color: '#0d0f14', fontSize: '16px', fontWeight: '700',
       border: 'none', cursor: 'pointer',
-      boxShadow: '0 8px 24px rgba(37,99,235,0.35)',
+      boxShadow: '0 8px 28px rgba(212,168,83,0.30)',
       letterSpacing: '-0.2px',
     },
     btnSecondary: {
       display: 'inline-flex', alignItems: 'center', gap: '10px',
       padding: '14px 28px', borderRadius: '14px',
-      background: 'var(--bg-card-solid)', color: 'var(--accent-indigo)',
+      background: 'rgba(212,168,83,0.06)', color: 'var(--accent-amber)',
       fontSize: '16px', fontWeight: '700',
-      border: '1px solid var(--border-color)', cursor: 'pointer',
+      border: '1px solid rgba(212,168,83,0.18)', cursor: 'pointer',
       boxShadow: 'var(--shadow-sm)',
     },
     statsRow: {
@@ -120,6 +145,7 @@ const Home = () => {
       padding: '8px 16px', borderRadius: '999px',
       background: bg, border: `1px solid ${color}22`,
       fontSize: '14px', fontWeight: '700', color,
+      transition: 'all 0.3s ease',
     }),
     statValue: { fontSize: '18px', fontWeight: '900' },
     sectionTitle: {
@@ -130,10 +156,10 @@ const Home = () => {
       fontSize: '16px', color: 'var(--text-secondary)', marginBottom: '48px',
     },
     featureCard: (color, bg) => ({
-      background: 'var(--bg-card)', borderRadius: '20px', padding: '28px',
+      background: 'var(--bg-card)', borderRadius: '24px', padding: '28px',
       border: '1px solid var(--border-color)',
       boxShadow: 'var(--shadow-sm)',
-      transition: 'all 0.3s ease', cursor: 'default',
+      transition: 'all 0.4s cubic-bezier(0.22, 1, 0.36, 1)', cursor: 'default',
       textAlign: 'left',
     }),
     iconBox: (color, bg) => ({
@@ -141,6 +167,7 @@ const Home = () => {
       background: bg, display: 'flex', alignItems: 'center',
       justifyContent: 'center', color, marginBottom: '16px',
       border: `1px solid ${color}22`,
+      boxShadow: `0 0 20px ${color}10`,
     }),
     cardBadge: (color, bg) => ({
       display: 'inline-block', fontSize: '10px', fontWeight: '800',
@@ -178,24 +205,28 @@ const Home = () => {
     <div>
       {/* ── Hero ── */}
       <div style={S.heroSection}>
-        {/* Badge */}
+        {/* Neural badge */}
         <FadeIn delay={0}>
           <div style={S.badge}>
             <motion.span
               animate={{ rotate: [0, 360] }}
-              transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
+              transition={{ duration: 6, repeat: Infinity, ease: 'linear' }}
+              style={{ display: 'inline-block' }}
             >
-              ✦
+              ◈
             </motion.span>
             AI-Powered Medical Imaging
           </div>
         </FadeIn>
 
-        {/* Headline */}
+        {/* Typewriter headline */}
         <FadeIn delay={100}>
           <h1 style={S.heroTitle}>
-            AI MRI <GradientText text="Tumor" /><br />
-            <GradientText text="Detection" />
+            {heroText}
+            {!heroDone && <span className="typewriter-cursor" />}
+            <br />
+            <GradientText text={heroText2} />
+            {heroDone && !heroDone2 && <span className="typewriter-cursor" />}
           </h1>
         </FadeIn>
 
@@ -203,8 +234,8 @@ const Home = () => {
         <FadeIn delay={180}>
           <p style={S.heroDesc}>
             Upload your MRI scan for instant AI-powered tumor detection using{' '}
-            <strong style={{ color: 'var(--accent-indigo)' }}>ESRGAN</strong> super-resolution and{' '}
-            <strong style={{ color: 'var(--accent-indigo)' }}>U-Net++</strong> segmentation.
+            <strong style={{ color: 'var(--accent-amber)' }}>ESRGAN</strong> super-resolution and{' '}
+            <strong style={{ color: 'var(--accent-lavender)' }}>U-Net++</strong> segmentation.
           </p>
         </FadeIn>
 
@@ -224,10 +255,14 @@ const Home = () => {
         <FadeIn delay={460} style={{ width: '100%' }}>
           <div style={S.statsRow}>
             {STATS.map((s, i) => (
-              <div key={i} style={S.statPill(s.color, s.bg)}>
+              <motion.div
+                key={i}
+                style={S.statPill(s.color, s.bg)}
+                whileHover={{ scale: 1.05, boxShadow: `0 0 24px ${s.color}20` }}
+              >
                 <span style={S.statValue}><CountUp target={s.value} suffix={s.suffix} duration={1.5} /></span>
                 <span style={{ fontWeight: '500', color: 'var(--text-secondary)', fontSize: '13px' }}>{s.label}</span>
-              </div>
+              </motion.div>
             ))}
           </div>
         </FadeIn>
@@ -251,7 +286,7 @@ const Home = () => {
       </div>
 
       {/* Scroll indicator */}
-      <FadeIn delay={600} style={{ textAlign: 'center', paddingBottom: '40px', color: '#cbd5e1' }}>
+      <FadeIn delay={600} style={{ textAlign: 'center', paddingBottom: '40px', color: 'var(--text-muted)' }}>
         <motion.div
           animate={{ y: [0, 8, 0] }}
           transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
@@ -274,20 +309,34 @@ const Home = () => {
           gap: '24px',
         }}>
           {FEATURES.map((f, i) => (
-            <FloatingCard key={i} delay={i * 100}
+            <FloatingCard key={i} delay={i * 120}
               style={S.featureCard(f.color, f.bg)}
             >
-              <div style={S.iconBox(f.color, f.bg)}>{f.icon}</div>
-              <div style={S.cardBadge(f.color, f.bg)}>{f.badge}</div>
-              <h3 style={S.cardTitle}>{f.title}</h3>
-              <p style={S.cardDesc}>{f.desc}</p>
+              <GlowCard
+                glowColor={`${f.color}15`}
+                style={{
+                  background: 'transparent',
+                  borderRadius: '16px',
+                  padding: '0',
+                }}
+              >
+                <div style={S.iconBox(f.color, f.bg)}>{f.icon}</div>
+                <div style={S.cardBadge(f.color, f.bg)}>{f.badge}</div>
+                <h3 style={S.cardTitle}>{f.title}</h3>
+                <p style={S.cardDesc}>{f.desc}</p>
 
-              {/* Bottom accent line */}
-              <div style={{
-                height: '3px', marginTop: '20px', borderRadius: '999px',
-                background: `linear-gradient(90deg, ${f.color}, transparent)`,
-                opacity: 0.4,
-              }} />
+                {/* Bottom animated accent line */}
+                <motion.div
+                  initial={{ scaleX: 0 }}
+                  animate={{ scaleX: 1 }}
+                  transition={{ duration: 1.2, delay: 0.3 + i * 0.15, ease: [0.22, 1, 0.36, 1] }}
+                  style={{
+                    height: '3px', marginTop: '20px', borderRadius: '999px',
+                    background: `linear-gradient(90deg, ${f.color}, transparent)`,
+                    opacity: 0.5, transformOrigin: 'left',
+                  }}
+                />
+              </GlowCard>
             </FloatingCard>
           ))}
         </div>
@@ -298,23 +347,24 @@ const Home = () => {
         <div style={{
           display: 'flex', flexWrap: 'wrap', justifyContent: 'center',
           gap: '32px', padding: '40px 0 20px',
-          borderTop: '1px solid rgba(37,99,235,0.08)',
+          borderTop: '1px solid rgba(212,168,83,0.08)',
         }}>
           {[
-            { icon: <ShieldIcon />, label: 'HIPAA Compliant', color: '#059669' },
-            { icon: <ZapIcon />,    label: '<2s Processing',   color: '#2563eb' },
-            { icon: <FileIcon />,   label: 'PDF + JSON Export', color: '#7c3aed' },
-            { icon: <MicroscopeIcon />, label: 'Gemini Vision AI', color: '#0891b2' },
+
+            { icon: <ZapIcon />,    label: '<2s Processing',   color: '#d4a853' },
+            { icon: <FileIcon />,   label: 'PDF + JSON Export', color: '#9b8ec4' },
+            { icon: <MicroscopeIcon />, label: 'Gemini Vision AI', color: '#5ea8a8' },
           ].map((item, i) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 * i + 0.3, duration: 0.5 }}
-              whileHover={{ y: -3 }}
+              whileHover={{ y: -4, scale: 1.05 }}
               style={{
                 display: 'flex', alignItems: 'center', gap: '10px',
                 color: item.color, fontSize: '14px', fontWeight: '600',
+                cursor: 'default',
               }}
             >
               {item.icon}

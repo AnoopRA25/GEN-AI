@@ -9,8 +9,8 @@ import toast from 'react-hot-toast';
 // ─── Inline SVG icons ─────────────────────────────────────────────────────────
 const DownloadIcon  = () => <svg width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>;
 const RefreshIcon   = () => <svg width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>;
-const AlertIcon     = () => <svg width="24" height="24" fill="none" stroke="#ef4444" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>;
-const ShieldIcon    = () => <svg width="24" height="24" fill="none" stroke="#22c55e" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>;
+const AlertIcon     = () => <svg width="24" height="24" fill="none" stroke="#d96b6b" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>;
+const ShieldIcon    = () => <svg width="24" height="24" fill="none" stroke="#7cb893" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>;
 const ActivityIcon  = () => <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>;
 const ClockIcon     = () => <svg width="12" height="12" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>;
 const BrainIcon     = () => <svg width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>;
@@ -18,20 +18,20 @@ const ChevronUpIcon = () => <svg width="16" height="16" fill="none" stroke="curr
 const ChevronDnIcon = () => <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7"/></svg>;
 const BarIcon       = () => <svg width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>;
 const ZapIcon       = () => <svg width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>;
-const WarnIcon      = () => <svg width="11" height="11" fill="none" stroke="#f97316" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>;
+const WarnIcon      = () => <svg width="11" height="11" fill="none" stroke="#c07850" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>;
 
-// ─── Severity / Risk colour maps ──────────────────────────────────────────────
+// ─── Severity / Risk colour maps — warm palette ───────────────────────────────
 const SEV_META = {
-  None:   { color: '#16a34a', bg: 'rgba(22,163,74,0.08)',   border: 'rgba(22,163,74,0.25)' },
-  Small:  { color: '#2563eb', bg: 'rgba(37,99,235,0.08)',   border: 'rgba(37,99,235,0.25)' },
-  Medium: { color: '#ea580c', bg: 'rgba(234,88,12,0.08)',   border: 'rgba(234,88,12,0.25)' },
-  Large:  { color: '#dc2626', bg: 'rgba(220,38,38,0.08)',   border: 'rgba(220,38,38,0.25)' },
+  None:   { color: '#7cb893', bg: 'rgba(124,184,147,0.08)',  border: 'rgba(124,184,147,0.25)' },
+  Small:  { color: '#5ea8a8', bg: 'rgba(94,168,168,0.08)',   border: 'rgba(94,168,168,0.25)' },
+  Medium: { color: '#c07850', bg: 'rgba(192,120,80,0.08)',   border: 'rgba(192,120,80,0.25)' },
+  Large:  { color: '#d96b6b', bg: 'rgba(217,107,107,0.08)',  border: 'rgba(217,107,107,0.25)' },
 };
 const RISK_COLOR = {
-  'No Risk':       { color: '#16a34a', bg: 'rgba(22,163,74,0.08)',   border: 'rgba(22,163,74,0.25)' },
-  'Low Risk':      { color: '#2563eb', bg: 'rgba(37,99,235,0.08)',   border: 'rgba(37,99,235,0.25)' },
-  'Moderate Risk': { color: '#ea580c', bg: 'rgba(234,88,12,0.08)',   border: 'rgba(234,88,12,0.25)' },
-  'High Risk':     { color: '#dc2626', bg: 'rgba(220,38,38,0.08)',   border: 'rgba(220,38,38,0.25)' },
+  'No Risk':       { color: '#7cb893', bg: 'rgba(124,184,147,0.08)',  border: 'rgba(124,184,147,0.25)' },
+  'Low Risk':      { color: '#5ea8a8', bg: 'rgba(94,168,168,0.08)',   border: 'rgba(94,168,168,0.25)' },
+  'Moderate Risk': { color: '#c07850', bg: 'rgba(192,120,80,0.08)',   border: 'rgba(192,120,80,0.25)' },
+  'High Risk':     { color: '#d96b6b', bg: 'rgba(217,107,107,0.08)',  border: 'rgba(217,107,107,0.25)' },
 };
 
 // ─── Simple custom Markdown parser & renderer ──────────────────────────────
@@ -41,7 +41,7 @@ const parseItalic = (text) => {
   return parts.map((part, i) => {
     if (part.startsWith('*') && part.endsWith('*')) {
       return (
-        <em key={i} style={{ fontStyle: 'italic', color: '#475569' }}>
+        <em key={i} style={{ fontStyle: 'italic', color: 'var(--text-secondary)' }}>
           {part.slice(1, -1)}
         </em>
       );
@@ -57,7 +57,7 @@ const parseBoldAndItalic = (text) => {
     if (part.startsWith('**') && part.endsWith('**')) {
       const boldText = part.slice(2, -2);
       return (
-        <strong key={i} style={{ fontWeight: '700', color: '#0f172a' }}>
+        <strong key={i} style={{ fontWeight: '700', color: 'var(--text-primary)' }}>
           {parseItalic(boldText)}
         </strong>
       );
@@ -78,7 +78,7 @@ const renderMarkdown = (text) => {
         <h5 key={idx} style={{ 
           fontSize: '15px', 
           fontWeight: '700', 
-          color: '#1e3a8a', 
+          color: 'var(--accent-amber)', 
           marginTop: '16px', 
           marginBottom: '8px',
           display: 'flex',
@@ -94,7 +94,7 @@ const renderMarkdown = (text) => {
         <h4 key={idx} style={{ 
           fontSize: '17px', 
           fontWeight: '800', 
-          color: '#1e3a8a', 
+          color: 'var(--accent-amber)', 
           marginTop: '20px', 
           marginBottom: '10px' 
         }}>
@@ -107,7 +107,7 @@ const renderMarkdown = (text) => {
         <h3 key={idx} style={{ 
           fontSize: '19px', 
           fontWeight: '900', 
-          color: '#1e3a8a', 
+          color: 'var(--accent-amber)', 
           marginTop: '24px', 
           marginBottom: '12px' 
         }}>
@@ -121,7 +121,7 @@ const renderMarkdown = (text) => {
       return (
         <li key={idx} style={{ 
           fontSize: '13.5px', 
-          color: '#334155', 
+          color: 'var(--text-primary)', 
           marginLeft: '20px', 
           marginBottom: '6px', 
           lineHeight: '1.6',
@@ -142,8 +142,9 @@ const renderMarkdown = (text) => {
       <p key={idx} style={{ 
         fontSize: '13.5px', 
         lineHeight: '1.65', 
-        color: '#334155', 
-        margin: '6px 0' 
+        color: 'var(--text-primary)', 
+        margin: '6px 0',
+        opacity: 0.85,
       }}>
         {parseBoldAndItalic(line)}
       </p>
@@ -189,7 +190,7 @@ const Dashboard = ({ data, onReset }) => {
   // ─── Style helpers ────────────────────────────────────────────────────────
   const card = (extra = {}) => ({
     background: 'var(--bg-card-solid)',
-    borderRadius: '16px',
+    borderRadius: '18px',
     border: '1px solid var(--border-color)',
     boxShadow: 'var(--shadow-md)',
     transition: 'background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease',
@@ -197,22 +198,22 @@ const Dashboard = ({ data, onReset }) => {
   });
 
   const CONF_BARS = [
-    { label: 'Segmentation Confidence', value: data.confidence,                      color: '#2563eb' },
-    { label: 'Enhancement Quality',     value: Math.min(data.confidence * 0.95, 100), color: '#7c3aed' },
-    { label: 'Boundary Precision',      value: Math.min(data.confidence * 0.92, 100), color: '#059669' },
-    { label: 'Classification Score',    value: Math.min(data.confidence * 0.88, 100), color: '#ea580c' },
+    { label: 'Segmentation Confidence', value: data.confidence,                      color: '#d4a853' },
+    { label: 'Enhancement Quality',     value: Math.min(data.confidence * 0.95, 100), color: '#9b8ec4' },
+    { label: 'Boundary Precision',      value: Math.min(data.confidence * 0.92, 100), color: '#7cb893' },
+    { label: 'Classification Score',    value: Math.min(data.confidence * 0.88, 100), color: '#c07850' },
   ];
 
   const METRIC_CARDS = [
-    { label: 'Tumor Area',   value: `${data.tumor_percentage}%`,  color: '#dc2626' },
+    { label: 'Tumor Area',   value: `${data.tumor_percentage}%`,  color: '#d96b6b' },
     { label: 'Severity',     value: data.severity,                color: sev.color  },
-    { label: 'AI Model',     value: 'U-Net++',                    color: '#2563eb'  },
-    { label: 'Enhancement',  value: 'ESRGAN',                     color: '#7c3aed'  },
+    { label: 'AI Model',     value: 'U-Net++',                    color: '#9b8ec4'  },
+    { label: 'Enhancement',  value: 'ESRGAN',                     color: '#d4a853'  },
   ];
 
   return (
     <motion.div ref={reportRef} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-      style={{ display: 'flex', flexDirection: 'column', gap: '20px', paddingBottom: '32px', fontFamily: 'Inter, sans-serif' }}
+      style={{ display: 'flex', flexDirection: 'column', gap: '20px', paddingBottom: '32px', fontFamily: "'DM Sans', sans-serif" }}
     >
       {/* ── Toolbar ── */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px' }}>
@@ -229,7 +230,7 @@ const Dashboard = ({ data, onReset }) => {
               <ActivityIcon /> Analysis complete
             </span>
             <span>•</span>
-            <span style={{ fontFamily: 'monospace', color: 'var(--accent-indigo)', fontWeight: '600', fontSize: '11px' }}>
+            <span style={{ fontFamily: "'JetBrains Mono', monospace", color: 'var(--accent-amber)', fontWeight: '600', fontSize: '11px' }}>
               {scanId}
             </span>
           </div>
@@ -237,19 +238,21 @@ const Dashboard = ({ data, onReset }) => {
         <div style={{ display: 'flex', gap: '10px' }}>
           <button onClick={exportPDF} style={{
             display: 'flex', alignItems: 'center', gap: '7px',
-            padding: '9px 18px', borderRadius: '10px', cursor: 'pointer',
-            background: 'var(--border-color)', border: '1px solid var(--border-color)',
+            padding: '9px 18px', borderRadius: '12px', cursor: 'pointer',
+            background: 'rgba(212,168,83,0.06)', border: '1px solid rgba(212,168,83,0.12)',
             color: 'var(--text-primary)', fontSize: '13px', fontWeight: '600',
             transition: 'background 0.2s ease, border-color 0.2s ease, color 0.2s ease',
+            fontFamily: "'DM Sans', sans-serif",
           }}>
             <DownloadIcon /> Export PDF
           </button>
           <button onClick={onReset} style={{
             display: 'flex', alignItems: 'center', gap: '7px',
-            padding: '9px 18px', borderRadius: '10px', cursor: 'pointer',
-            background: 'linear-gradient(135deg, #1d4ed8, #2563eb)',
-            border: 'none', color: '#fff', fontSize: '13px', fontWeight: '600',
-            boxShadow: '0 4px 14px rgba(37,99,235,0.35)',
+            padding: '9px 18px', borderRadius: '12px', cursor: 'pointer',
+            background: 'linear-gradient(135deg, #c09038, #d4a853)',
+            border: 'none', color: '#0d0f14', fontSize: '13px', fontWeight: '700',
+            boxShadow: '0 4px 18px rgba(212,168,83,0.30)',
+            fontFamily: "'DM Sans', sans-serif",
           }}>
             <RefreshIcon /> New Scan
           </button>
@@ -259,18 +262,18 @@ const Dashboard = ({ data, onReset }) => {
       {/* ── Detection Banner ── */}
       <motion.div initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.08 }}
         style={{
-          borderRadius: '16px', padding: '20px 24px',
+          borderRadius: '18px', padding: '20px 24px',
           display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px',
-          background: data.tumor_detected ? 'rgba(220,38,38,0.05)' : 'rgba(22,163,74,0.05)',
-          border: `1px solid ${data.tumor_detected ? 'rgba(220,38,38,0.2)' : 'rgba(22,163,74,0.2)'}`,
+          background: data.tumor_detected ? 'rgba(217,107,107,0.04)' : 'rgba(124,184,147,0.04)',
+          border: `1px solid ${data.tumor_detected ? 'rgba(217,107,107,0.15)' : 'rgba(124,184,147,0.15)'}`,
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
           <div style={{
             width: '52px', height: '52px', borderRadius: '14px', flexShrink: 0,
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            background: data.tumor_detected ? 'rgba(220,38,38,0.1)' : 'rgba(22,163,74,0.1)',
-            border: `1px solid ${data.tumor_detected ? 'rgba(220,38,38,0.25)' : 'rgba(22,163,74,0.25)'}`,
+            background: data.tumor_detected ? 'rgba(217,107,107,0.08)' : 'rgba(124,184,147,0.08)',
+            border: `1px solid ${data.tumor_detected ? 'rgba(217,107,107,0.20)' : 'rgba(124,184,147,0.20)'}`,
           }}>
             {data.tumor_detected ? <AlertIcon /> : <ShieldIcon />}
           </div>
@@ -325,10 +328,10 @@ const Dashboard = ({ data, onReset }) => {
               <div key={m.label} style={{
                 ...card({ padding: '14px 16px' }),
               }}>
-                <div style={{ fontSize: '10px', fontWeight: '700', letterSpacing: '0.07em', textTransform: 'uppercase', color: '#94a3b8', marginBottom: '6px' }}>
+                <div style={{ fontSize: '10px', fontWeight: '700', letterSpacing: '0.07em', textTransform: 'uppercase', color: 'var(--text-secondary)', marginBottom: '6px' }}>
                   {m.label}
                 </div>
-                <div style={{ fontSize: '18px', fontWeight: '800', color: m.color, fontFamily: 'monospace', letterSpacing: '-0.5px' }}>
+                <div style={{ fontSize: '18px', fontWeight: '800', color: m.color, fontFamily: "'JetBrains Mono', monospace", letterSpacing: '-0.5px' }}>
                   {m.value}
                 </div>
               </div>
@@ -348,11 +351,11 @@ const Dashboard = ({ data, onReset }) => {
             <TissueChart tumorPct={data.tumor_percentage} />
             <div style={{ display: 'flex', gap: '16px', marginTop: '12px', fontSize: '12px', color: 'var(--text-secondary)' }}>
               <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <span style={{ width: '10px', height: '10px', borderRadius: '3px', background: '#3b82f6', display: 'inline-block' }} />
+                <span style={{ width: '10px', height: '10px', borderRadius: '3px', background: '#5ea8a8', display: 'inline-block' }} />
                 Healthy {(100 - data.tumor_percentage).toFixed(2)}%
               </span>
               <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <span style={{ width: '10px', height: '10px', borderRadius: '3px', background: '#ef4444', display: 'inline-block' }} />
+                <span style={{ width: '10px', height: '10px', borderRadius: '3px', background: '#d96b6b', display: 'inline-block' }} />
                 Abnormal {data.tumor_percentage}%
               </span>
             </div>
@@ -372,11 +375,11 @@ const Dashboard = ({ data, onReset }) => {
             <div key={m.label}>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px' }}>
                 <span style={{ fontSize: '13px', color: 'var(--text-secondary)', fontWeight: '500' }}>{m.label}</span>
-                <span style={{ fontSize: '13px', fontWeight: '700', color: m.color, fontFamily: 'monospace' }}>
+                <span style={{ fontSize: '13px', fontWeight: '700', color: m.color, fontFamily: "'JetBrains Mono', monospace" }}>
                   {m.value.toFixed(1)}%
                 </span>
               </div>
-              <div style={{ height: '8px', borderRadius: '999px', background: 'rgba(148,163,184,0.15)', overflow: 'hidden' }}>
+              <div style={{ height: '8px', borderRadius: '999px', background: 'rgba(212,168,83,0.06)', overflow: 'hidden' }}>
                 <motion.div
                   initial={{ width: 0 }}
                   animate={{ width: `${m.value}%` }}
@@ -402,6 +405,7 @@ const Dashboard = ({ data, onReset }) => {
             width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
             padding: '18px 24px', background: 'none', border: 'none', cursor: 'pointer',
             borderBottom: insightOpen ? '1px solid var(--border-color)' : 'none',
+            fontFamily: "'DM Sans', sans-serif",
           }}
         >
           <h4 style={{ fontSize: '14px', fontWeight: '700', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '8px', margin: 0 }}>
@@ -411,7 +415,7 @@ const Dashboard = ({ data, onReset }) => {
               <span style={{
                 fontSize: '10px', fontWeight: '800', letterSpacing: '0.06em',
                 padding: '2px 8px', borderRadius: '999px',
-                background: 'rgba(124,58,237,0.1)', border: '1px solid rgba(124,58,237,0.25)', color: '#7c3aed',
+                background: 'rgba(155,142,196,0.10)', border: '1px solid rgba(155,142,196,0.25)', color: '#9b8ec4',
               }}>
                 VISION-POWERED
               </span>
@@ -430,22 +434,18 @@ const Dashboard = ({ data, onReset }) => {
             >
               <div style={{ padding: '20px 24px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
                 <div style={{
-                  background: 'var(--bg-card)', borderLeft: '4px solid var(--accent-blue)',
-                  borderRadius: '0 16px 16px 0', padding: '20px 24px',
+                  background: 'var(--bg-card)', borderLeft: '4px solid var(--accent-amber)',
+                  borderRadius: '0 18px 18px 0', padding: '20px 24px',
                   transition: 'background 0.3s ease, border-color 0.3s ease',
                 }}>
                   <div style={{ margin: 0 }}>
                     {renderMarkdown(displayedInsight)}
                     {!typingDone && (
-                      <span style={{
-                        display: 'inline-block', width: '2px', height: '16px',
-                        background: '#2563eb', marginLeft: '3px', verticalAlign: 'middle',
-                        animation: 'pulse 1s ease-in-out infinite',
-                      }} />
+                      <span className="typewriter-cursor" />
                     )}
                   </div>
                 </div>
-                <p style={{ fontSize: '12px', color: '#94a3b8', display: 'flex', alignItems: 'center', gap: '6px', margin: 0 }}>
+                <p style={{ fontSize: '12px', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '6px', margin: 0 }}>
                   <WarnIcon />
                   This AI analysis is not a substitute for professional medical diagnosis.
                 </p>

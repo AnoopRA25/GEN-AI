@@ -16,18 +16,18 @@ const getCSSVal = (name, fallback) => {
 export const ConfidenceGauge = ({ confidence, tumorDetected }) => {
   const pct = Math.min(Math.max(confidence, 0), 100);
 
-  /* Color logic: red if tumor present + high confidence, green if clear */
+  /* Color logic: coral if tumor present + high confidence, sage if clear */
   let fillColor;
   if (tumorDetected) {
-    fillColor = pct >= 80 ? '#ef4444' : pct >= 60 ? '#f97316' : '#eab308';
+    fillColor = pct >= 80 ? '#d96b6b' : pct >= 60 ? '#c07850' : '#d4a853';
   } else {
-    fillColor = pct >= 70 ? '#22c55e' : '#3b82f6';
+    fillColor = pct >= 70 ? '#7cb893' : '#5ea8a8';
   }
 
   const data = {
     datasets: [{
       data: [pct, 100 - pct],
-      backgroundColor: [fillColor, 'rgba(148,163,184,0.10)'],
+      backgroundColor: [fillColor, 'rgba(212,168,83,0.06)'],
       borderColor:     [fillColor, 'transparent'],
       borderWidth: 0,
       circumference: 200,
@@ -51,7 +51,7 @@ export const ConfidenceGauge = ({ confidence, tumorDetected }) => {
     ? '🔴 Tumor Present'
     : '✅ Tumor Not Present';
 
-  const detectionColor = tumorDetected ? '#ef4444' : '#22c55e';
+  const detectionColor = tumorDetected ? '#d96b6b' : '#7cb893';
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', gap: '4px' }}>
@@ -70,7 +70,7 @@ export const ConfidenceGauge = ({ confidence, tumorDetected }) => {
           alignItems: 'center', justifyContent: 'flex-end',
           paddingBottom: '22px',
         }}>
-          <span style={{ fontSize: '30px', fontWeight: '900', color: fillColor, lineHeight: 1, fontFamily: 'monospace' }}>
+          <span style={{ fontSize: '30px', fontWeight: '900', color: fillColor, lineHeight: 1, fontFamily: "'JetBrains Mono', monospace" }}>
             {pct.toFixed(1)}%
           </span>
         </div>
@@ -92,17 +92,17 @@ export const TissueChart = ({ tumorPct }) => {
   const isLight = typeof document !== 'undefined' && document.documentElement.classList.contains('light');
   const chartKey = isLight ? 'light' : 'dark';
 
-  const textColor = getCSSVal('--text-secondary', '#94a3b8');
-  const borderColor = getCSSVal('--border-color', 'rgba(255,255,255,0.09)');
-  const titleColor = getCSSVal('--text-primary', '#f0f4f8');
-  const tooltipBg = getCSSVal('--bg-card-solid', '#161b27');
+  const textColor = getCSSVal('--text-secondary', '#8a8378');
+  const borderColor = getCSSVal('--border-color', 'rgba(212,168,83,0.10)');
+  const titleColor = getCSSVal('--text-primary', '#ede8e0');
+  const tooltipBg = getCSSVal('--bg-card-solid', '#1a1d26');
 
   const data = {
     labels: ['Healthy', 'Abnormal'],
     datasets: [{
       data: [healthy, tumor],
-      backgroundColor: ['rgba(59,130,246,0.65)', 'rgba(239,68,68,0.75)'],
-      borderColor:     ['rgba(59,130,246,1)',     'rgba(239,68,68,1)'],
+      backgroundColor: ['rgba(94,168,168,0.60)', 'rgba(217,107,107,0.70)'],
+      borderColor:     ['rgba(94,168,168,1)',     'rgba(217,107,107,1)'],
       borderWidth: 1,
       borderRadius: 6,
     }],

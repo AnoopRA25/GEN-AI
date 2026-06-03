@@ -57,7 +57,7 @@ const Ring = ({ value, max, color, size = 90, strokeWidth = 8, label, unit, benc
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}>
       <div style={{ position: 'relative', width: size, height: size }}>
         <svg width={size} height={size} style={{ transform: 'rotate(-90deg)' }}>
-          <circle cx={size/2} cy={size/2} r={r} fill="none" stroke="rgba(148,163,184,0.15)" strokeWidth={strokeWidth} />
+          <circle cx={size/2} cy={size/2} r={r} fill="none" stroke="rgba(212,168,83,0.08)" strokeWidth={strokeWidth} />
           <motion.circle
             cx={size/2} cy={size/2} r={r} fill="none"
             stroke={color} strokeWidth={strokeWidth}
@@ -72,7 +72,7 @@ const Ring = ({ value, max, color, size = 90, strokeWidth = 8, label, unit, benc
           position: 'absolute', inset: 0,
           display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
         }}>
-          <span style={{ fontSize: '15px', fontWeight: '800', color, lineHeight: 1, fontFamily: 'monospace' }}>
+          <span style={{ fontSize: '15px', fontWeight: '800', color, lineHeight: 1, fontFamily: "'JetBrains Mono', monospace" }}>
             {value}
           </span>
           {unit && <span style={{ fontSize: '10px', color: 'var(--text-secondary)', fontWeight: '600' }}>{unit}</span>}
@@ -96,44 +96,42 @@ const ESRGANPanel = () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', minWidth: '220px' }}>
       <div style={{
         fontSize: '10px', fontWeight: '800', letterSpacing: '0.1em', textTransform: 'uppercase',
-        color: '#94a3b8', paddingBottom: '8px', borderBottom: '1px solid rgba(37,99,235,0.08)',
+        color: 'var(--text-secondary)', paddingBottom: '8px', borderBottom: '1px solid rgba(212,168,83,0.08)',
       }}>
         Final ESRGAN Results
       </div>
 
       <div style={{ display: 'flex', gap: '28px', alignItems: 'flex-start' }}>
-        {/* PSNR — max sensible is ~40dB */}
-        <Ring value={32.96} max={40} color="#2563eb" label="Best PSNR" unit="dB" benchmark="30 – 33" />
-        {/* SSIM — out of 1.0 */}
-        <Ring value={0.9524} max={1} color="#7c3aed" label="Best SSIM" unit="" benchmark="0.88 – 0.93" size={90} />
+        <Ring value={32.96} max={40} color="#d4a853" label="Best PSNR" unit="dB" benchmark="30 – 33" />
+        <Ring value={0.9524} max={1} color="#9b8ec4" label="Best SSIM" unit="" benchmark="0.88 – 0.93" size={90} />
       </div>
 
       {/* Performance badges */}
       <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
         {[
-          { label: 'PSNR', val: '32.96 dB', status: 'Exceeds Average', color: '#2563eb', bg: 'rgba(37,99,235,0.08)' },
-          { label: 'SSIM', val: '0.9524',   status: 'Above Benchmark', color: '#7c3aed', bg: 'rgba(124,58,237,0.08)' },
+          { label: 'PSNR', val: '32.96 dB', status: 'Exceeds Average', color: '#d4a853', bg: 'rgba(212,168,83,0.08)' },
+          { label: 'SSIM', val: '0.9524',   status: 'Above Benchmark', color: '#9b8ec4', bg: 'rgba(155,142,196,0.08)' },
         ].map(b => (
           <div key={b.label} style={{
-            padding: '8px 12px', borderRadius: '10px',
+            padding: '8px 12px', borderRadius: '12px',
             background: b.bg, border: `1px solid ${b.color}22`,
           }}>
-            <div style={{ fontSize: '10px', fontWeight: '700', color: '#94a3b8', letterSpacing: '0.05em', textTransform: 'uppercase' }}>{b.label}</div>
-            <div style={{ fontSize: '16px', fontWeight: '800', color: b.color, fontFamily: 'monospace', lineHeight: 1.2 }}>{b.val}</div>
-            <div style={{ fontSize: '10px', color: '#059669', fontWeight: '700', marginTop: '2px' }}>✓ {b.status}</div>
+            <div style={{ fontSize: '10px', fontWeight: '700', color: 'var(--text-secondary)', letterSpacing: '0.05em', textTransform: 'uppercase' }}>{b.label}</div>
+            <div style={{ fontSize: '16px', fontWeight: '800', color: b.color, fontFamily: "'JetBrains Mono', monospace", lineHeight: 1.2 }}>{b.val}</div>
+            <div style={{ fontSize: '10px', color: '#7cb893', fontWeight: '700', marginTop: '2px' }}>✓ {b.status}</div>
           </div>
         ))}
       </div>
     </div>
 
     {/* Divider */}
-    <div style={{ width: '1px', background: 'rgba(37,99,235,0.1)', alignSelf: 'stretch' }} />
+    <div style={{ width: '1px', background: 'rgba(212,168,83,0.10)', alignSelf: 'stretch' }} />
 
     {/* Middle: Optimizations */}
     <div style={{ flex: '1 1 260px', minWidth: '260px' }}>
       <div style={{
         fontSize: '10px', fontWeight: '800', letterSpacing: '0.1em', textTransform: 'uppercase',
-        color: '#94a3b8', paddingBottom: '8px', marginBottom: '12px', borderBottom: '1px solid rgba(37,99,235,0.08)',
+        color: 'var(--text-secondary)', paddingBottom: '8px', marginBottom: '12px', borderBottom: '1px solid rgba(212,168,83,0.08)',
       }}>
         Optimizations Used
       </div>
@@ -146,16 +144,16 @@ const ESRGANPanel = () => (
             transition={{ delay: 0.1 * i + 0.2, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
             style={{
               display: 'flex', alignItems: 'center', gap: '10px',
-              padding: '8px 12px', borderRadius: '10px',
-              background: 'rgba(37,99,235,0.04)',
-              border: '1px solid rgba(37,99,235,0.08)',
+              padding: '8px 12px', borderRadius: '12px',
+              background: 'rgba(212,168,83,0.03)',
+              border: '1px solid rgba(212,168,83,0.06)',
             }}
           >
             <span style={{ fontSize: '15px', flexShrink: 0 }}>{opt.icon}</span>
-            <span style={{ fontSize: '13px', color: '#334155', fontWeight: '500' }}>{opt.text}</span>
+            <span style={{ fontSize: '13px', color: 'var(--text-primary)', fontWeight: '500' }}>{opt.text}</span>
             <span style={{
               marginLeft: 'auto', fontSize: '10px', fontWeight: '700',
-              color: '#059669', background: 'rgba(5,150,105,0.1)',
+              color: '#7cb893', background: 'rgba(124,184,147,0.1)',
               padding: '2px 7px', borderRadius: '999px', flexShrink: 0,
             }}>✓</span>
           </motion.div>
@@ -164,13 +162,13 @@ const ESRGANPanel = () => (
     </div>
 
     {/* Divider */}
-    <div style={{ width: '1px', background: 'rgba(37,99,235,0.1)', alignSelf: 'stretch' }} />
+    <div style={{ width: '1px', background: 'rgba(212,168,83,0.10)', alignSelf: 'stretch' }} />
 
     {/* Right: Visual Super-Resolution Output */}
     <div style={{ flex: '1 1 300px', minWidth: '300px' }}>
       <div style={{
         fontSize: '10px', fontWeight: '800', letterSpacing: '0.1em', textTransform: 'uppercase',
-        color: '#94a3b8', paddingBottom: '8px', marginBottom: '12px', borderBottom: '1px solid rgba(37,99,235,0.08)',
+        color: 'var(--text-secondary)', paddingBottom: '8px', marginBottom: '12px', borderBottom: '1px solid rgba(212,168,83,0.08)',
       }}>
         Visual Resolution Enhancement
       </div>
@@ -201,11 +199,6 @@ const ESRGANPanel = () => (
 const UNetPanel = () => {
   const dice = UNET_DATA.dice;
   const iou = UNET_DATA.iou;
-  const size = 90, strokeWidth = 8;
-  const r = (size - strokeWidth) / 2;
-  const circ = 2 * Math.PI * r;
-  const offsetDice = circ * (1 - dice.value);
-  const offsetIou = circ * (1 - iou.value);
 
   return (
     <div style={{ display: 'flex', gap: '32px', padding: '20px 24px', flexWrap: 'wrap' }}>
@@ -214,29 +207,29 @@ const UNetPanel = () => {
       <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', minWidth: '220px' }}>
         <div style={{
           fontSize: '10px', fontWeight: '800', letterSpacing: '0.1em', textTransform: 'uppercase',
-          color: '#94a3b8', paddingBottom: '8px', borderBottom: '1px solid rgba(124,58,237,0.1)',
+          color: 'var(--text-secondary)', paddingBottom: '8px', borderBottom: '1px solid rgba(155,142,196,0.10)',
         }}>
           Final U-Net++ Results
         </div>
 
         {/* Dice & IoU Rings */}
         <div style={{ display: 'flex', gap: '20px', alignItems: 'flex-start' }}>
-          <Ring value={dice.value} max={1} color="#7c3aed" label="Best Dice (F1)" unit="" benchmark={dice.benchmark} />
-          <Ring value={iou.value} max={1} color="#2563eb" label="Best IoU" unit="" benchmark={iou.benchmark} />
+          <Ring value={dice.value} max={1} color="#9b8ec4" label="Best Dice (F1)" unit="" benchmark={dice.benchmark} />
+          <Ring value={iou.value} max={1} color="#5ea8a8" label="Best IoU" unit="" benchmark={iou.benchmark} />
         </div>
 
         {/* BraTS comparison mini-gauge */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
           {[
-            { label: 'Our Model (Dice)',  value: dice.value, color: '#7c3aed' },
-            { label: 'BraTS Avg (Dice)', value: 0.885,  color: '#94a3b8' },
+            { label: 'Our Model (Dice)',  value: dice.value, color: '#9b8ec4' },
+            { label: 'BraTS Avg (Dice)', value: 0.885,  color: 'var(--text-secondary)' },
           ].map((row, i) => (
             <div key={i}>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px', fontSize: '10px', fontWeight: '600' }}>
                 <span style={{ color: row.color }}>{row.label}</span>
-                <span style={{ fontFamily: 'monospace', color: row.color }}>{row.value}</span>
+                <span style={{ fontFamily: "'JetBrains Mono', monospace", color: row.color }}>{row.value}</span>
               </div>
-              <div style={{ width: '200px', height: '6px', borderRadius: '999px', background: 'rgba(148,163,184,0.15)', overflow: 'hidden' }}>
+              <div style={{ width: '200px', height: '6px', borderRadius: '999px', background: 'rgba(212,168,83,0.08)', overflow: 'hidden' }}>
                 <motion.div
                   initial={{ width: 0 }}
                   animate={{ width: `${(row.value / 1) * 100}%` }}
@@ -251,32 +244,32 @@ const UNetPanel = () => {
         {/* Performance badges */}
         <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', maxWidth: '240px' }}>
           {[
-            { label: 'Precision', val: '91.04%', status: 'High Precision', color: '#059669', bg: 'rgba(5,150,105,0.08)' },
-            { label: 'Recall', val: '90.59%', status: 'High Recall', color: '#2563eb', bg: 'rgba(37,99,235,0.08)' },
-            { label: 'F1-Score', val: '0.9076', status: 'Optimal F1', color: '#7c3aed', bg: 'rgba(124,58,237,0.08)' },
-            { label: 'Val Loss', val: '0.1863', status: 'Minimal Loss', color: '#ea580c', bg: 'rgba(234,88,12,0.08)' },
+            { label: 'Precision', val: '91.04%', status: 'High Precision', color: '#7cb893', bg: 'rgba(124,184,147,0.08)' },
+            { label: 'Recall', val: '90.59%', status: 'High Recall', color: '#5ea8a8', bg: 'rgba(94,168,168,0.08)' },
+            { label: 'F1-Score', val: '0.9076', status: 'Optimal F1', color: '#9b8ec4', bg: 'rgba(155,142,196,0.08)' },
+            { label: 'Val Loss', val: '0.1863', status: 'Minimal Loss', color: '#c07850', bg: 'rgba(192,120,80,0.08)' },
           ].map(b => (
             <div key={b.label} style={{
-              padding: '6px 10px', borderRadius: '10px',
+              padding: '6px 10px', borderRadius: '12px',
               background: b.bg, border: `1px solid ${b.color}22`,
               minWidth: '100px', flex: '1 1 45%',
             }}>
-              <div style={{ fontSize: '9px', fontWeight: '700', color: '#94a3b8', letterSpacing: '0.05em', textTransform: 'uppercase' }}>{b.label}</div>
-              <div style={{ fontSize: '14px', fontWeight: '800', color: b.color, fontFamily: 'monospace', lineHeight: 1.2 }}>{b.val}</div>
-              <div style={{ fontSize: '9px', color: '#059669', fontWeight: '700', marginTop: '2px' }}>✓ {b.status}</div>
+              <div style={{ fontSize: '9px', fontWeight: '700', color: 'var(--text-secondary)', letterSpacing: '0.05em', textTransform: 'uppercase' }}>{b.label}</div>
+              <div style={{ fontSize: '14px', fontWeight: '800', color: b.color, fontFamily: "'JetBrains Mono', monospace", lineHeight: 1.2 }}>{b.val}</div>
+              <div style={{ fontSize: '9px', color: '#7cb893', fontWeight: '700', marginTop: '2px' }}>✓ {b.status}</div>
             </div>
           ))}
         </div>
       </div>
 
       {/* Divider */}
-      <div style={{ width: '1px', background: 'rgba(124,58,237,0.1)', alignSelf: 'stretch' }} />
+      <div style={{ width: '1px', background: 'rgba(155,142,196,0.10)', alignSelf: 'stretch' }} />
 
       {/* Middle: Features */}
       <div style={{ flex: '1 1 260px', minWidth: '260px' }}>
         <div style={{
           fontSize: '10px', fontWeight: '800', letterSpacing: '0.1em', textTransform: 'uppercase',
-          color: '#94a3b8', paddingBottom: '8px', marginBottom: '12px', borderBottom: '1px solid rgba(124,58,237,0.1)',
+          color: 'var(--text-secondary)', paddingBottom: '8px', marginBottom: '12px', borderBottom: '1px solid rgba(155,142,196,0.10)',
         }}>
           Features
         </div>
@@ -289,16 +282,16 @@ const UNetPanel = () => {
               transition={{ delay: 0.1 * i + 0.2, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
               style={{
                 display: 'flex', alignItems: 'center', gap: '10px',
-                padding: '8px 12px', borderRadius: '10px',
-                background: 'rgba(124,58,237,0.04)',
-                border: '1px solid rgba(124,58,237,0.08)',
+                padding: '8px 12px', borderRadius: '12px',
+                background: 'rgba(155,142,196,0.03)',
+                border: '1px solid rgba(155,142,196,0.06)',
               }}
             >
               <span style={{ fontSize: '15px', flexShrink: 0 }}>{f.icon}</span>
-              <span style={{ fontSize: '13px', color: '#334155', fontWeight: '500' }}>{f.text}</span>
+              <span style={{ fontSize: '13px', color: 'var(--text-primary)', fontWeight: '500' }}>{f.text}</span>
               <span style={{
                 marginLeft: 'auto', fontSize: '10px', fontWeight: '700',
-                color: '#059669', background: 'rgba(5,150,105,0.1)',
+                color: '#7cb893', background: 'rgba(124,184,147,0.1)',
                 padding: '2px 7px', borderRadius: '999px', flexShrink: 0,
               }}>✓</span>
             </motion.div>
@@ -307,13 +300,13 @@ const UNetPanel = () => {
       </div>
 
       {/* Divider */}
-      <div style={{ width: '1px', background: 'rgba(124,58,237,0.1)', alignSelf: 'stretch' }} />
+      <div style={{ width: '1px', background: 'rgba(155,142,196,0.10)', alignSelf: 'stretch' }} />
 
       {/* Right: Visual Segmentation Output */}
       <div style={{ flex: '1 1 300px', minWidth: '300px' }}>
         <div style={{
           fontSize: '10px', fontWeight: '800', letterSpacing: '0.1em', textTransform: 'uppercase',
-          color: '#94a3b8', paddingBottom: '8px', marginBottom: '12px', borderBottom: '1px solid rgba(124,58,237,0.1)',
+          color: 'var(--text-secondary)', paddingBottom: '8px', marginBottom: '12px', borderBottom: '1px solid rgba(155,142,196,0.10)',
         }}>
           Visual Segmentation Results
         </div>
@@ -343,9 +336,9 @@ const UNetPanel = () => {
 
 // ─── Coming soon placeholder ──────────────────────────────────────────────────
 const ComingSoon = ({ name }) => (
-  <div style={{ padding: '32px 24px', textAlign: 'center', color: '#94a3b8' }}>
+  <div style={{ padding: '32px 24px', textAlign: 'center', color: 'var(--text-secondary)' }}>
     <div style={{ fontSize: '32px', marginBottom: '8px' }}>🔬</div>
-    <div style={{ fontSize: '14px', fontWeight: '600', color: '#475569' }}>{name} metrics panel</div>
+    <div style={{ fontSize: '14px', fontWeight: '600', color: 'var(--text-primary)' }}>{name} metrics panel</div>
     <div style={{ fontSize: '12px', marginTop: '4px' }}>Coming soon</div>
   </div>
 );
@@ -357,7 +350,7 @@ const AnalysisPanel = () => (
     <div style={{ flex: '1 1 60%', minWidth: '340px' }}>
       <div style={{
         fontSize: '10px', fontWeight: '800', letterSpacing: '0.1em', textTransform: 'uppercase',
-        color: '#94a3b8', paddingBottom: '8px', marginBottom: '16px', borderBottom: '1px solid rgba(124,58,237,0.1)',
+        color: 'var(--text-secondary)', paddingBottom: '8px', marginBottom: '16px', borderBottom: '1px solid rgba(212,168,83,0.08)',
       }}>
         Validation & Training Curves
       </div>
@@ -385,7 +378,7 @@ const AnalysisPanel = () => (
       <div>
         <div style={{
           fontSize: '10px', fontWeight: '800', letterSpacing: '0.1em', textTransform: 'uppercase',
-          color: '#94a3b8', paddingBottom: '8px', marginBottom: '12px', borderBottom: '1px solid rgba(124,58,237,0.1)',
+          color: 'var(--text-secondary)', paddingBottom: '8px', marginBottom: '12px', borderBottom: '1px solid rgba(212,168,83,0.08)',
         }}>
           Training Specifications
         </div>
@@ -401,8 +394,8 @@ const AnalysisPanel = () => (
           ].map((item, i) => (
             <div key={i} style={{
               display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-              padding: '8px 12px', borderRadius: '10px',
-              background: 'rgba(37,99,235,0.03)', border: '1px solid rgba(37,99,235,0.06)'
+              padding: '8px 12px', borderRadius: '12px',
+              background: 'rgba(212,168,83,0.03)', border: '1px solid rgba(212,168,83,0.06)'
             }}>
               <span style={{ fontSize: '11px', color: 'var(--text-secondary)', fontWeight: '500' }}>{item.label}</span>
               <span style={{ fontSize: '12px', color: 'var(--text-primary)', fontWeight: '700', textAlign: 'right' }}>{item.val}</span>
@@ -414,26 +407,26 @@ const AnalysisPanel = () => (
       <div>
         <div style={{
           fontSize: '10px', fontWeight: '800', letterSpacing: '0.1em', textTransform: 'uppercase',
-          color: '#94a3b8', paddingBottom: '8px', marginBottom: '12px', borderBottom: '1px solid rgba(124,58,237,0.1)',
+          color: 'var(--text-secondary)', paddingBottom: '8px', marginBottom: '12px', borderBottom: '1px solid rgba(212,168,83,0.08)',
         }}>
           Best Model Epoch Results
         </div>
         
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
           {[
-            { label: 'Validation Loss', val: '0.1863', color: '#ea580c' },
-            { label: 'Dice Score', val: '0.9076', color: '#7c3aed' },
-            { label: 'Intersection over Union (IoU)', val: '0.8321', color: '#2563eb' },
-            { label: 'Precision', val: '91.04%', color: '#059669' },
-            { label: 'Recall', val: '90.59%', color: '#0891b2' },
-            { label: 'F1-Score', val: '0.9076', color: '#7c3aed' },
+            { label: 'Validation Loss', val: '0.1863', color: '#c07850' },
+            { label: 'Dice Score', val: '0.9076', color: '#9b8ec4' },
+            { label: 'Intersection over Union (IoU)', val: '0.8321', color: '#5ea8a8' },
+            { label: 'Precision', val: '91.04%', color: '#7cb893' },
+            { label: 'Recall', val: '90.59%', color: '#5ea8a8' },
+            { label: 'F1-Score', val: '0.9076', color: '#9b8ec4' },
           ].map((metric, i) => (
             <div key={i} style={{
-              padding: '10px 12px', borderRadius: '12px',
+              padding: '10px 12px', borderRadius: '14px',
               background: 'var(--bg-card)', border: '1px solid var(--border-color)',
             }}>
-              <div style={{ fontSize: '9px', fontWeight: '700', color: '#94a3b8', textTransform: 'uppercase', marginBottom: '4px' }}>{metric.label}</div>
-              <div style={{ fontSize: '14px', fontWeight: '800', color: metric.color, fontFamily: 'monospace', lineHeight: '1.2' }}>{metric.val}</div>
+              <div style={{ fontSize: '9px', fontWeight: '700', color: 'var(--text-secondary)', textTransform: 'uppercase', marginBottom: '4px' }}>{metric.label}</div>
+              <div style={{ fontSize: '14px', fontWeight: '800', color: metric.color, fontFamily: "'JetBrains Mono', monospace", lineHeight: '1.2' }}>{metric.val}</div>
             </div>
           ))}
         </div>
@@ -490,7 +483,7 @@ function App() {
     <div style={{
       minHeight: '100vh', display: 'flex', flexDirection: 'column',
       background: 'var(--bg-primary)', color: 'var(--text-primary)',
-      fontFamily: "'Inter', sans-serif", transition: 'background-color 0.3s ease, color 0.3s ease',
+      fontFamily: "'DM Sans', sans-serif", transition: 'background-color 0.4s ease, color 0.4s ease',
     }}>
       <GridBackground>
         {/* ── Header ── */}
@@ -501,8 +494,8 @@ function App() {
             transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             style={{
               background: 'var(--bg-card)',
-              backdropFilter: 'blur(16px)',
-              WebkitBackdropFilter: 'blur(16px)',
+              backdropFilter: 'blur(20px) saturate(1.4)',
+              WebkitBackdropFilter: 'blur(20px) saturate(1.4)',
               borderBottom: '1px solid var(--border-color)',
               boxShadow: 'var(--shadow-sm)',
               transition: 'background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease',
@@ -517,15 +510,15 @@ function App() {
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                 <div style={{
                   width: '42px', height: '42px', borderRadius: '12px',
-                  background: 'linear-gradient(135deg, #1d4ed8 0%, #2563eb 50%, #0ea5e9 100%)',
+                  background: 'linear-gradient(135deg, #c09038 0%, #d4a853 50%, #c07850 100%)',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  boxShadow: '0 4px 16px rgba(37,99,235,0.35)',
+                  boxShadow: '0 4px 20px rgba(212,168,83,0.30)',
                 }}>
-                  <Brain size={22} color="#fff" />
+                  <Brain size={22} color="#0d0f14" />
                 </div>
                 <div>
                   <div style={{ fontSize: '20px', fontWeight: '800', letterSpacing: '-0.5px', color: 'var(--text-primary)', lineHeight: 1 }}>
-                    MRI<span style={{ color: '#2563eb' }}>·</span>AI
+                    MRI<span style={{ color: '#d4a853' }}>·</span>AI
                   </div>
                   <div style={{ fontSize: '11px', color: 'var(--text-secondary)', fontWeight: '500', marginTop: '2px' }}>
                     Tumor Detection System
@@ -544,14 +537,15 @@ function App() {
                       onClick={() => handleNavClick(link)}
                       style={{
                         fontSize: '13px', fontWeight: '600',
-                        color: isActive ? 'var(--accent-indigo)' : 'var(--text-secondary)',
+                        color: isActive ? 'var(--accent-amber)' : 'var(--text-secondary)',
                         textDecoration: 'none', cursor: 'pointer',
-                        padding: '6px 14px', borderRadius: '8px', border: 'none',
-                        background: isActive ? 'rgba(99,102,241,0.12)' : 'transparent',
-                        transition: 'all 0.2s', letterSpacing: '0.01em',
+                        padding: '6px 14px', borderRadius: '10px', border: 'none',
+                        background: isActive ? 'rgba(212,168,83,0.10)' : 'transparent',
+                        transition: 'all 0.25s ease', letterSpacing: '0.01em',
                         display: 'flex', alignItems: 'center', gap: '5px',
+                        fontFamily: "'DM Sans', sans-serif",
                       }}
-                      onMouseEnter={e => { if (!isActive) e.currentTarget.style.color = 'var(--accent-indigo)'; }}
+                      onMouseEnter={e => { if (!isActive) e.currentTarget.style.color = 'var(--accent-amber)'; }}
                       onMouseLeave={e => { if (!isActive) e.currentTarget.style.color = 'var(--text-secondary)'; }}
                     >
                       {link}
@@ -575,8 +569,8 @@ function App() {
                 <button
                   onClick={() => setTheme(prev => prev === 'light' ? 'dark' : 'light')}
                   style={{
-                    background: 'var(--border-color)',
-                    border: '1px solid var(--border-color)',
+                    background: 'rgba(212,168,83,0.06)',
+                    border: '1px solid rgba(212,168,83,0.12)',
                     borderRadius: '10px',
                     width: '38px',
                     height: '38px',
@@ -588,14 +582,14 @@ function App() {
                     transition: 'all 0.25s ease',
                   }}
                   onMouseEnter={e => {
-                    e.currentTarget.style.color = 'var(--text-primary)';
-                    e.currentTarget.style.background = 'rgba(99,102,241,0.12)';
-                    e.currentTarget.style.borderColor = 'rgba(99,102,241,0.3)';
+                    e.currentTarget.style.color = 'var(--accent-amber)';
+                    e.currentTarget.style.background = 'rgba(212,168,83,0.12)';
+                    e.currentTarget.style.borderColor = 'rgba(212,168,83,0.30)';
                   }}
                   onMouseLeave={e => {
                     e.currentTarget.style.color = 'var(--text-secondary)';
-                    e.currentTarget.style.background = 'var(--border-color)';
-                    e.currentTarget.style.borderColor = 'var(--border-color)';
+                    e.currentTarget.style.background = 'rgba(212,168,83,0.06)';
+                    e.currentTarget.style.borderColor = 'rgba(212,168,83,0.12)';
                   }}
                   title={theme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'}
                 >
@@ -610,12 +604,12 @@ function App() {
                   style={{
                     display: 'flex', alignItems: 'center', gap: '8px',
                     padding: '6px 14px', borderRadius: '999px',
-                    background: apiOnline === true ? 'rgba(34,197,94,0.10)'
-                      : apiOnline === false ? 'rgba(239,68,68,0.10)'
-                      : 'rgba(99,102,241,0.10)',
-                    border: `1px solid ${apiOnline === true ? 'rgba(34,197,94,0.3)'
-                      : apiOnline === false ? 'rgba(239,68,68,0.3)'
-                      : 'rgba(99,102,241,0.3)'}`,
+                    background: apiOnline === true ? 'rgba(124,184,147,0.10)'
+                      : apiOnline === false ? 'rgba(217,107,107,0.10)'
+                      : 'rgba(212,168,83,0.10)',
+                    border: `1px solid ${apiOnline === true ? 'rgba(124,184,147,0.3)'
+                      : apiOnline === false ? 'rgba(217,107,107,0.3)'
+                      : 'rgba(212,168,83,0.3)'}`,
                   }}
                 >
                   <motion.span
@@ -623,12 +617,12 @@ function App() {
                     transition={{ duration: 1.5, repeat: Infinity }}
                     style={{
                       width: '7px', height: '7px', borderRadius: '50%', display: 'block',
-                      background: apiOnline === true ? '#22c55e' : apiOnline === false ? '#ef4444' : '#818cf8',
+                      background: apiOnline === true ? '#7cb893' : apiOnline === false ? '#d96b6b' : '#d4a853',
                     }}
                   />
                   <span style={{
                     fontSize: '12px', fontWeight: '700', letterSpacing: '0.02em',
-                    color: apiOnline === true ? '#16a34a' : apiOnline === false ? '#dc2626' : '#6366f1',
+                    color: apiOnline === true ? '#7cb893' : apiOnline === false ? '#d96b6b' : '#d4a853',
                   }}>
                     API {apiOnline === null ? 'Checking…' : apiOnline ? 'Online' : 'Offline'}
                   </span>
@@ -649,7 +643,7 @@ function App() {
                 style={{
                   position: 'absolute', left: 0, right: 0,
                   background: 'var(--bg-card-solid)',
-                  backdropFilter: 'blur(20px)',
+                  backdropFilter: 'blur(24px)',
                   borderBottom: '1px solid var(--border-color)',
                   boxShadow: 'var(--shadow-lg)',
                   transformOrigin: 'top',
@@ -677,7 +671,7 @@ function App() {
         <footer style={{ borderTop: '1px solid var(--border-color)', background: 'var(--bg-card)', padding: '20px 24px', transition: 'background-color 0.3s ease, border-color 0.3s ease' }}>
           <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>MRI·AI &nbsp;•&nbsp; ESRGAN + U-Net++ Segmentation Pipeline</span>
-            <span style={{ fontSize: '12px', color: 'var(--accent-blue)', opacity: 0.8, fontWeight: '700' }}>FOR CLINICAL RESEARCH USE ONLY</span>
+            <span style={{ fontSize: '12px', color: 'var(--accent-amber)', opacity: 0.8, fontWeight: '700' }}>FOR CLINICAL RESEARCH USE ONLY</span>
           </div>
         </footer>
 
@@ -686,9 +680,9 @@ function App() {
           toastOptions={{
             style: {
               background: 'var(--bg-card-solid)', color: 'var(--text-primary)',
-              border: '1px solid var(--border-color)', borderRadius: '12px',
+              border: '1px solid var(--border-color)', borderRadius: '14px',
               boxShadow: 'var(--shadow-md)',
-              fontFamily: 'Inter, sans-serif', fontSize: '14px',
+              fontFamily: "'DM Sans', sans-serif", fontSize: '14px',
             },
           }}
         />
